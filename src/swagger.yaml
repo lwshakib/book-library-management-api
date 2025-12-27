@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Open Library API
+  title: Book Library API
   version: 1.0.0
   description: |
     A comprehensive API for managing a digital library system.

@@ -1,115 +1,175 @@
-# Open Library Management System
+# Book Library Management System
 
 A comprehensive full-stack digital library management system built with Node.js, featuring user authentication, book management, reviews, favorites, and a robust email notification system.
+
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
 ## 🚀 Features
 
 ### Core Functionality
 
-- **User Management**: Registration, authentication, email verification, password reset
-- **Book Management**: CRUD operations for books with cover image uploads
-- **Review System**: User reviews and ratings for books
-- **Favorites**: Personal bookmark system for users
-- **Search & Filter**: Advanced book search with filtering and sorting
-- **Admin Panel**: Administrative controls for book and user management
+- **User Management**: Complete user registration, authentication, email verification, and password reset functionality
+- **Book Management**: Full CRUD operations for books with cover image uploads
+- **Review System**: User reviews and ratings for books with aggregated statistics
+- **Favorites**: Personal bookmark system for users to save their favorite books
+- **Search & Filter**: Advanced book search with filtering, sorting, and pagination
+- **Profile Management**: User profile viewing and management
 
 ### Authentication & Security
 
-- **JWT Authentication**: Secure token-based authentication
-- **OAuth Integration**: Google and GitHub OAuth2 support
-- **Email Verification**: Email-based account verification
-- **Password Security**: bcrypt hashing with secure password reset
-- **Rate Limiting**: Protection against abuse and DDoS attacks
-- **Session Management**: Secure session handling
+- **JWT Authentication**: Secure token-based authentication with access tokens
+- **OAuth Integration**: Google and GitHub OAuth2 support for social login
+- **Email Verification**: Email-based account verification system
+- **Password Security**: bcrypt hashing with secure password reset flow
+- **Rate Limiting**: Protection against abuse and DDoS attacks (5000 requests per 15 minutes)
+- **Session Management**: Secure session handling with Passport.js
+- **CORS Protection**: Configurable cross-origin resource sharing
 
 ### Email System
 
-- **Queue-based Processing**: Reliable email delivery using BullMQ
-- **Multiple Templates**: Welcome, verification, password reset, security alerts
-- **Development Support**: MailHog integration for testing
-- **Production Ready**: Gmail SMTP support for production
+- **Queue-based Processing**: Reliable email delivery using BullMQ and Redis
+- **Multiple Templates**: Welcome emails, verification, password reset, and security alerts
+- **Development Support**: MailHog integration for local email testing
+- **Production Ready**: Gmail SMTP support for production environments
+- **Retry Logic**: Automatic retry with exponential backoff for failed emails
 
 ### API & Documentation
 
-- **RESTful API**: Well-structured REST endpoints
-- **Swagger Documentation**: Interactive API documentation
-- **Input Validation**: Zod schema validation
-- **Error Handling**: Comprehensive error management
-- **Logging**: Detailed application and HTTP logging
+- **RESTful API**: Well-structured REST endpoints following best practices
+- **Swagger Documentation**: Interactive API documentation at `/docs`
+- **Input Validation**: Zod schema validation for all inputs
+- **Error Handling**: Comprehensive error management with custom error classes
+- **Logging**: Detailed application and HTTP logging using Winston and Morgan
+
+### Frontend Views
+
+- **Server-Side Rendering**: EJS templates for dynamic content
+- **Responsive Design**: Mobile-friendly interface
+- **Book Catalog**: Browse and search books with pagination
+- **Book Details**: Detailed book information with reviews
+- **User Profile**: View and manage user profile
+- **Favorites Page**: Manage favorite books
 
 ## 🏗️ Architecture
 
-This project follows a microservices architecture with the following components:
+This project follows a monolithic architecture with modular design:
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Client App    │    │   Server API    │    │  Email Service  │
-│   (Frontend)    │◄──►│   (Backend)     │◄──►│   (Microservice)│
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                              │
-                              ▼
-                       ┌─────────────────┐
-                       │   Databases     │
-                       │ MongoDB + Redis │
-                       └─────────────────┘
+┌─────────────────┐
+│   Client/Views  │
+│   (EJS Pages)   │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐    ┌─────────────────┐
+│   Express API   │◄──►│  Email Service  │
+│   (Backend)     │    │   (BullMQ)      │
+└────────┬────────┘    └────────┬────────┘
+         │                      │
+         ▼                      ▼
+┌─────────────────┐    ┌─────────────────┐
+│    MongoDB      │    │      Redis      │
+│   (Database)    │    │  (Queue/Cache)  │
+└─────────────────┘    └─────────────────┘
 ```
 
 ## 📁 Project Structure
 
 ```
 book-library-management-api/
-├── server/                     # Main API server
-│   ├── src/
-│   │   ├── controllers/        # Route handlers
-│   │   ├── models/            # Database models
-│   │   ├── routes/            # API routes
-│   │   ├── middlewares/       # Custom middleware
-│   │   ├── utils/             # Utility functions
-│   │   ├── schema/            # Validation schemas
-│   │   ├── logger/            # Logging configuration
-│   │   ├── passport/          # OAuth strategies
-│   │   ├── views/             # EJS templates
-│   │   └── swagger.yaml       # API documentation
-│   ├── logs/                  # Application logs
-│   └── package.json
-├── email-service/             # Email microservice
-│   ├── templates/             # Email templates
-│   ├── styles/                # Email styling
-│   ├── icons/                 # Email icons
-│   ├── index.js               # Queue worker
-│   ├── sendEmail.js           # Email sender
-│   └── package.json
-├── docker-compose.yml         # Development services
+├── src/
+│   ├── controllers/           # Route handlers and business logic
+│   │   ├── auth.controllers.js
+│   │   ├── book.controller.js
+│   │   ├── favorite.controllers.js
+│   │   └── review.controllers.js
+│   ├── models/               # Mongoose database models
+│   │   ├── auth/            # User and token models
+│   │   ├── book.model.js
+│   │   ├── favorite.model.js
+│   │   └── review.model.js
+│   ├── routes/              # API route definitions
+│   │   ├── auth.routes.js
+│   │   ├── book.routes.js
+│   │   ├── favorite.routes.js
+│   │   ├── review.routes.js
+│   │   └── index.js
+│   ├── middlewares/         # Custom middleware
+│   │   ├── auth.middlewares.js
+│   │   ├── error.middlewares.js
+│   │   └── multer.middlewares.js
+│   ├── utils/               # Utility functions
+│   │   ├── templates/       # Email templates
+│   │   ├── ApiError.js
+│   │   ├── ApiResponse.js
+│   │   ├── asyncHandler.js
+│   │   ├── helpers.js
+│   │   └── mail.js
+│   ├── schema/              # Zod validation schemas
+│   │   ├── auth.schema.js
+│   │   └── book.schema.js
+│   ├── logger/              # Logging configuration
+│   │   ├── winston.logger.js
+│   │   └── morgan.logger.js
+│   ├── passport/            # OAuth strategies
+│   │   └── index.js
+│   ├── views/               # EJS templates
+│   │   ├── index.ejs
+│   │   ├── book-details.ejs
+│   │   ├── favorites.ejs
+│   │   ├── profile.ejs
+│   │   └── partials/
+│   ├── services/            # Business services
+│   │   └── email.service.js
+│   ├── seeds/               # Database seeders
+│   │   └── books.seeds.js
+│   ├── db/                  # Database configuration
+│   │   └── index.js
+│   ├── data/                # Static data
+│   │   └── books.json
+│   ├── swagger.yaml         # API documentation
+│   ├── app.js               # Express app configuration
+│   ├── index.js             # Application entry point
+│   └── constants.js         # Application constants
+├── public/                  # Static assets
+│   ├── css/
+│   ├── images/
+│   └── uploads/
+├── logs/                    # Application logs
+├── docker-compose.yml       # Development services
+├── package.json
+├── .env.example
 ├── .gitignore
 ├── .dockerignore
-└── README.md
+├── nodemon.json
+├── README.md
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
+└── LICENSE
 ```
 
 ## 🛠️ Tech Stack
 
-### Backend (Server)
+### Backend
 
-- **Runtime**: Node.js with ES6 modules
-- **Framework**: Express.js
+- **Runtime**: Node.js (v14+) with ES6 modules
+- **Framework**: Express.js v5
 - **Database**: MongoDB with Mongoose ODM
 - **Authentication**: JWT, Passport.js (Google, GitHub OAuth)
 - **Validation**: Zod schema validation
 - **Documentation**: Swagger/OpenAPI
 - **Logging**: Winston + Morgan
 - **Security**: bcryptjs, express-rate-limit, CORS
-
-### Email Service
-
-- **Queue System**: BullMQ with Redis
-- **Email Provider**: Nodemailer
-- **Templates**: Custom HTML email templates
-- **Development**: MailHog for testing
-- **Production**: Gmail SMTP
+- **File Upload**: Multer
+- **Email**: Nodemailer with BullMQ queue
+- **Template Engine**: EJS
 
 ### Infrastructure
 
 - **Database**: MongoDB
-- **Cache/Queue**: Redis
+- **Cache/Queue**: Redis (for BullMQ)
 - **Email Testing**: MailHog
 - **Containerization**: Docker Compose
 - **Development**: Nodemon for hot reloading
@@ -134,95 +194,74 @@ book-library-management-api/
 2. **Start development services**
 
    ```bash
-   # Start MongoDB, Redis, and MailHog
+   # Start MongoDB and MailHog
    docker-compose up -d
    ```
 
-3. **Install server dependencies**
+3. **Install dependencies**
 
    ```bash
-   cd server
    npm install
    ```
 
-4. **Install email service dependencies**
+4. **Set up environment variables**
+
+   Copy `.env.example` to `.env` and update the values:
 
    ```bash
-   cd ../email-service
-   npm install
+   cp .env.example .env
    ```
 
-5. **Set up environment variables**
-
-   Create `.env` files in both `server/` and `email-service/` directories:
-
-   **server/.env**
+   **Required environment variables:**
 
    ```env
    # Server Configuration
-   PORT=3000
+   PORT=7000
+   BACKEND_URL=http://localhost:7000
+   CLIENT_SSO_REDIRECT_URL=http://localhost:7000
    NODE_ENV=development
-   BACKEND_URL=http://localhost:3000
-   CLIENT_SSO_REDIRECT_URL=http://localhost:3000
 
    # Database
    MONGODB_URI=mongodb://localhost:27017
+   DB_NAME=book-library
 
-   # JWT Secrets
-   ACCESS_TOKEN_SECRET=your_access_token_secret
-   REFRESH_TOKEN_SECRET=your_refresh_token_secret
+   # JWT Secrets (change these!)
+   ACCESS_TOKEN_SECRET=your_secure_access_token_secret
+   EXPRESS_SESSION_SECRET=your_secure_session_secret
 
-   # Session Secret
-   EXPRESS_SESSION_SECRET=your_session_secret
-
-   # OAuth Credentials
+   # OAuth (optional for development)
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
+   GOOGLE_CALLBACK_URL=http://localhost:7000/auth/google/callback
+
    GITHUB_CLIENT_ID=your_github_client_id
    GITHUB_CLIENT_SECRET=your_github_client_secret
+   GITHUB_CALLBACK_URL=http://localhost:7000/auth/github/callback
 
-   # Redis Configuration
-   REDIS_HOST=localhost
-   REDIS_PORT=6379
-   ```
-
-   **email-service/.env**
-
-   ```env
-   # Email Service Configuration
-   NODE_ENV=development
-   REDIS_HOST=localhost
-   REDIS_PORT=6379
-
-   # Development (MailHog)
+   # Email Configuration
+   # For development (MailHog)
    MAILHOG_SMTP_HOST=localhost
    MAILHOG_SMTP_PORT=1025
 
-   # Production (Gmail) - Optional for development
-   GMAIL_USER=your_gmail_username
-   GMAIL_PASS=your_gmail_app_password
+   # For production (Gmail)
+   GMAIL_USER=your-email@gmail.com
+   GMAIL_PASS=your-app-password
    ```
 
-6. **Start the services**
-
-   **Terminal 1 - Start the main server**
+5. **Start the application**
 
    ```bash
-   cd server
+   # Development mode with hot reload
    npm run dev
+
+   # Production mode
+   npm start
    ```
 
-   **Terminal 2 - Start the email service**
-
-   ```bash
-   cd email-service
-   npm run dev
-   ```
-
-7. **Access the application**
-   - **API Server**: http://localhost:3000
-   - **API Documentation**: http://localhost:3000/docs
-   - **Health Check**: http://localhost:3000/health
+6. **Access the application**
+   - **Application**: http://localhost:7000
+   - **API Documentation**: http://localhost:7000/docs
+   - **Health Check**: http://localhost:7000/health
    - **MailHog UI**: http://localhost:8025 (for email testing)
 
 ## 📚 API Documentation
@@ -232,7 +271,6 @@ book-library-management-api/
 - `POST /auth/sign-up` - User registration
 - `POST /auth/sign-in` - User login
 - `POST /auth/sign-out` - User logout
-- `POST /auth/refresh-token` - Refresh access token
 - `POST /auth/forget-password` - Request password reset
 - `POST /auth/reset-password` - Reset password with token
 - `POST /auth/verify-email` - Verify email address
@@ -248,35 +286,38 @@ book-library-management-api/
 - `DELETE /books/:id` - Delete book (Admin only)
 - `POST /books/:id/upload-image` - Upload book cover image
 
-### Reviews & Favorites
+### Reviews
 
 - `GET /reviews` - Get all reviews
-- `GET /reviews/book/:bookId` - Get reviews for a book
-- `POST /reviews` - Create new review
-- `PUT /reviews/:id` - Update review
-- `DELETE /reviews/:id` - Delete review
+- `GET /reviews/book/:bookId` - Get reviews for a specific book
+- `POST /reviews` - Create new review (Authenticated users)
+- `PUT /reviews/:id` - Update review (Review owner only)
+- `DELETE /reviews/:id` - Delete review (Review owner only)
+
+### Favorites
+
 - `GET /favorites` - Get user's favorite books
 - `POST /favorites` - Add book to favorites
 - `DELETE /favorites/:bookId` - Remove book from favorites
 
-For complete API documentation, visit: http://localhost:3000/docs
+### Web Pages
+
+- `GET /` - Home page with book catalog
+- `GET /book/:id` - Book details page
+- `GET /profile` - User profile page
+- `GET /favorites` - User favorites page
+
+For complete API documentation with request/response examples, visit: http://localhost:7000/docs
 
 ## 🔧 Development
 
 ### Available Scripts
 
-**Server**
-
 ```bash
 npm start          # Start production server
 npm run dev        # Start development server with hot reload
-```
-
-**Email Service**
-
-```bash
-npm start          # Start email worker
-npm run dev        # Start email worker with hot reload
+npm run build      # No build step required (Node.js)
+npm test           # Run tests (to be implemented)
 ```
 
 ### Database Seeding
@@ -284,9 +325,9 @@ npm run dev        # Start email worker with hot reload
 To populate the database with sample books:
 
 ```bash
-# Make a POST request to the seeding endpoint (requires admin authentication)
-curl -X POST http://localhost:3000/seeds/add-books \
-  -H "Authorization: Bearer <admin_jwt_token>"
+# The seed endpoint is available at /seeds/add-books
+# Access it through the browser or make a POST request
+curl -X POST http://localhost:7000/seeds/add-books
 ```
 
 ### Code Style
@@ -300,7 +341,7 @@ The project uses Prettier for code formatting:
 
 - **Winston**: Application-level logging (info, error, debug)
 - **Morgan**: HTTP request logging
-- Log files are stored in the `server/logs/` directory
+- Log files are stored in the `logs/` directory
 
 ## 🐳 Docker Services
 
@@ -323,7 +364,6 @@ docker-compose up -d --build
 **Services included:**
 
 - **MongoDB**: Database server (port 27017)
-- **Redis Stack**: Cache and queue server (ports 6379, 8001)
 - **MailHog**: Email testing server (ports 1025, 8025)
 
 ## 🔒 Security Features
@@ -336,6 +376,7 @@ docker-compose up -d --build
 - **Session Management**: Secure session handling with Passport.js
 - **Email Verification**: Email-based account verification
 - **OAuth Integration**: Secure third-party authentication
+- **File Upload Security**: Multer with file type and size restrictions
 
 ## 📧 Email System
 
@@ -346,9 +387,7 @@ The email service provides:
 - **Development Support**: MailHog integration for testing
 - **Production Ready**: Gmail SMTP support for production
 - **Retry Logic**: Automatic retry with exponential backoff
-- **Concurrent Processing**: Configurable concurrency for email workers
-
-## 🧪 Testing
+- **HTML Templates**: Professional email templates with inline CSS
 
 ### Email Testing (Development)
 
@@ -357,73 +396,93 @@ The email service provides:
 3. Trigger email actions in the application
 4. View sent emails in MailHog interface
 
-### API Testing
+## 🧪 Testing
 
-Use the Swagger UI at http://localhost:3000/docs for interactive API testing.
+### Manual Testing
+
+Use the Swagger UI at http://localhost:7000/docs for interactive API testing.
+
+### Email Testing
+
+Access MailHog at http://localhost:8025 to view all emails sent during development.
 
 ## 🚀 Deployment
 
 ### Production Environment Variables
 
-**Server**
-
 ```env
 NODE_ENV=production
+PORT=7000
+BACKEND_URL=https://your-domain.com
 MONGODB_URI=mongodb://your-mongodb-uri
-REDIS_HOST=your-redis-host
-REDIS_PORT=6379
+DB_NAME=book-library
 ACCESS_TOKEN_SECRET=your-secure-secret
-REFRESH_TOKEN_SECRET=your-secure-secret
 EXPRESS_SESSION_SECRET=your-secure-secret
-```
-
-**Email Service**
-
-```env
-NODE_ENV=production
-REDIS_HOST=your-redis-host
-REDIS_PORT=6379
 GMAIL_USER=your-gmail-username
 GMAIL_PASS=your-gmail-app-password
 ```
 
 ### Production Considerations
 
-- Use a production MongoDB instance
-- Set up Redis for caching and queuing
-- Configure Gmail SMTP for email delivery
+- Use a production MongoDB instance (MongoDB Atlas recommended)
+- Set up Redis for email queue (if using BullMQ)
+- Configure Gmail SMTP or other email service for email delivery
 - Set up proper logging and monitoring
-- Use environment-specific secrets
+- Use environment-specific secrets (strong, random values)
 - Configure proper CORS origins
 - Set up SSL/TLS certificates
+- Use a process manager (PM2 recommended)
+- Set up reverse proxy (Nginx recommended)
 
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) file for detailed guidelines.
 
+### Quick Contribution Guide
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
 ## 📄 License
 
-This project is licensed under the ISC License.
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Authors
+
+- **lwshakib** - [GitHub Profile](https://github.com/lwshakib)
 
 ## 🆘 Support
 
 If you encounter any issues or have questions:
 
-1. Check the [API Documentation](http://localhost:3000/docs)
-2. Review the logs in `server/logs/`
+1. Check the [API Documentation](http://localhost:7000/docs)
+2. Review the logs in `logs/` directory
 3. Check the MailHog interface for email issues
-4. Open an issue on GitHub
+4. Open an issue on [GitHub Issues](https://github.com/lwshakib/book-library-management-api/issues)
 
-## 🔄 Version History
+## 🙏 Acknowledgments
 
-- **v1.0.0**: Initial release with core functionality
-  - User authentication and management
-  - Book CRUD operations
-  - Review and favorites system
-  - Email notification service
-  - OAuth integration
-  - API documentation
+- Express.js team for the excellent web framework
+- MongoDB team for the powerful database
+- BullMQ team for the robust queue system
+- All contributors who help improve this project
+
+## 📝 Changelog
+
+### v1.0.0 (Current)
+
+- Initial release with core functionality
+- User authentication and management
+- Book CRUD operations
+- Review and favorites system
+- Email notification service
+- OAuth integration (Google, GitHub)
+- API documentation with Swagger
+- Server-side rendering with EJS
 
 ---
 
-**Built with ❤️ using Node.js, Express, MongoDB, Redis, and BullMQ**
+**Built with ❤️ using Node.js, Express, MongoDB, and BullMQ**

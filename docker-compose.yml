@@ -7,7 +7,7 @@ services:
     volumes:
       - mongo_data:/data/db
     networks:
-      - open_library_network
+      - book_library_network
 
   mailhog:
     image: mailhog/mailhog:latest
@@ -16,9 +16,9 @@ services:
       - "1025:1025"
       - "8025:8025"
     networks:
-      - open_library_network
+      - book_library_network
 
 volumes:
   mongo_data:
 networks:
-  open_library_network:
+  book_library_network:

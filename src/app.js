@@ -291,9 +291,9 @@ app.get("/profile", verifyJWT, (req, res) => {
   res.render("profile", {
     user: req.user,
     profile: req.profile,
-    pageTitle: "Your Profile • Open Library",
+    pageTitle: "Your Profile • Book Library",
     pageDescription:
-      "View and manage your Open Library profile, preferences, and reading activity.",
+      "View and manage your Book Library profile, preferences, and reading activity.",
     canonicalUrl,
   });
 });
@@ -351,9 +351,9 @@ app.get("/favorite-books", verifyJWT, async (req, res, next) => {
         prevPage: page > 1 ? page - 1 : null,
       },
       user: req.user,
-      pageTitle: "Your Favorite Books • Open Library",
+      pageTitle: "Your Favorite Books • Book Library",
       pageDescription:
-        "Browse and manage your list of favorite books in Open Library.",
+        "Browse and manage your list of favorite books in Book Library.",
       canonicalUrl,
     });
   } catch (error) {
@@ -381,9 +381,9 @@ app.get("/book/:bookId", verifyJWT, async (req, res, next) => {
         book: null,
         reviews: [],
         reviewStats: null,
-        pageTitle: "Book Not Found • Open Library",
+        pageTitle: "Book Not Found • Book Library",
         pageDescription:
-          "The requested book could not be found in Open Library.",
+          "The requested book could not be found in Book Library.",
         canonicalUrl,
         activePage: "home",
         user: req.user,
@@ -440,7 +440,7 @@ app.get("/book/:bookId", verifyJWT, async (req, res, next) => {
     const baseUrl = `${req.protocol}://${req.get("host")}`;
     const pathOnly = req.originalUrl.split("?")[0] || `/book/${bookId}`;
     const canonicalUrl = `${baseUrl}${pathOnly}`;
-    const pageTitle = `${viewBook.title} • Open Library`;
+    const pageTitle = `${viewBook.title} • Book Library`;
     const pageDescription =
       viewBook.description?.slice(0, 160) ||
       `Read more about "${viewBook.title}" by ${viewBook.author}.`;
@@ -470,7 +470,7 @@ app.use(
     swaggerOptions: {
       docExpansion: "none", // keep all the sections collapsed by default
     },
-    customSiteTitle: "Open Library API Documentation",
+    customSiteTitle: "Book Library API Documentation",
     // customCss: ".swagger-ui .topbar { display: none }", // hide the top bar
   })
 );

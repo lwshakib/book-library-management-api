@@ -1,0 +1,989 @@
+openapi: 3.0.0
+info:
+  title: Open Library API
+  version: 1.0.0
+  description: |
+    A comprehensive API for managing a digital library system.
+    Features include user authentication, book management, reviews, and favorites.
+servers:
+  - url: ${{server}}
+
+tags:
+  - name: Authentication
+    description: User authentication and authorization endpoints
+  - name: Books
+    description: Book management endpoints
+  - name: Reviews
+    description: Book review management endpoints
+  - name: Favorites
+    description: User favorites management endpoints
+  - name: Seeds
+    description: Data seeding endpoints
+
+paths:
+  # Authentication Endpoints
+  /auth/sign-up:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+                - confirmPassword
+              properties:
+                name:
+                  type: string
+                  description: User's full name
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                password:
+                  type: string
+                  format: password
+                  description: User's password
+                confirmPassword:
+                  type: string
+                  format: password
+                  description: Password confirmation
+      responses:
+        "201":
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      authUserId:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      avatar:
+                        type: string
+                        format: uri
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+
+  /auth/sign-in:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate user and get access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        "200":
+          description: Successfully authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      avatar:
+                        type: string
+                        format: uri
+                  accessToken:
+                    type: string
+
+  /auth/sign-out:
+    post:
+      tags:
+        - Authentication
+      summary: Sign out user and invalidate session
+      responses:
+        "200":
+          description: Successfully signed out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /auth/forget-password:
+    post:
+      tags:
+        - Authentication
+      summary: Request password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        "200":
+          description: Password reset email sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /auth/reset-password:
+    post:
+      tags:
+        - Authentication
+      summary: Reset password with verification code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - verificationCode
+                - newPassword
+              properties:
+                verificationCode:
+                  type: string
+                newPassword:
+                  type: string
+                  format: password
+      responses:
+        "200":
+          description: Password successfully reset
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /auth/verify-email:
+    post:
+      tags:
+        - Authentication
+      summary: Verify user email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - verificationCode
+              properties:
+                verificationCode:
+                  type: string
+      responses:
+        "200":
+          description: Email successfully verified
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /auth/resend-verification-email:
+    post:
+      tags:
+        - Authentication
+      summary: Resend verification email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        "200":
+          description: Verification email resent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  # Books Endpoints
+  /books:
+    get:
+      tags:
+        - Books
+      summary: Get all books
+      parameters:
+        - name: field
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Fields to include in response (comma-separated)
+      responses:
+        "200":
+          description: List of books retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        title:
+                          type: string
+                        author:
+                          type: string
+                        genre:
+                          type: string
+                        coverImage:
+                          type: string
+                        reviewStats:
+                          type: object
+                          properties:
+                            reviewCount:
+                              type: integer
+                            averageRating:
+                              type: integer
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      limit:
+                        type: integer
+                      totalPages:
+                        type: integer
+                      hasNextPage:
+                        type: boolean
+                      hasPrevPage:
+                        type: boolean
+
+    post:
+      tags:
+        - Books
+      summary: Create a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - author
+                - genre
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                author:
+                  type: string
+                publishedDate:
+                  type: string
+                  format: date
+                genre:
+                  type: string
+                summary:
+                  type: string
+                ISBN:
+                  type: string
+                coverImage:
+                  type: string
+                pdfUrl:
+                  type: string
+                buyHardCopyFrom:
+                  type: string
+                  format: uri
+      responses:
+        "201":
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      author:
+                        type: string
+                      publishedDate:
+                        type: string
+                        format: date-time
+                      genre:
+                        type: string
+                      summary:
+                        type: string
+                      ISBN:
+                        type: string
+                      coverImage:
+                        type: string
+                      pdfUrl:
+                        type: string
+                      buyHardCopyFrom:
+                        type: string
+                        format: uri
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+
+  /books/{book_id}:
+    parameters:
+      - name: book_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the book
+    get:
+      tags:
+        - Books
+      summary: Get book by ID
+      responses:
+        "200":
+          description: Book details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      author:
+                        type: string
+                      publishedDate:
+                        type: string
+                        format: date-time
+                      genre:
+                        type: string
+                      summary:
+                        type: string
+                      ISBN:
+                        type: string
+                      coverImage:
+                        type: string
+                      pdfUrl:
+                        type: string
+                      buyHardCopyFrom:
+                        type: string
+                        format: uri
+                      reviewStats:
+                        type: object
+                        properties:
+                          reviewCount:
+                            type: integer
+                          averageRating:
+                            type: integer
+                      reviews:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                            bookId:
+                              type: string
+                            userId:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                email:
+                                  type: string
+                                  format: email
+                                avatar:
+                                  type: string
+                                  format: uri
+                            comment:
+                              type: string
+                            rating:
+                              type: integer
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type: string
+                              format: date-time
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+
+    patch:
+      tags:
+        - Books
+      summary: Update book details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                author:
+                  type: string
+                publishedDate:
+                  type: string
+                  format: date
+                genre:
+                  type: string
+                summary:
+                  type: string
+                ISBN:
+                  type: string
+                buyHardCopyFrom:
+                  type: string
+                  format: uri
+                description:
+                  type: string
+      responses:
+        "200":
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      author:
+                        type: string
+                      publishedDate:
+                        type: string
+                        format: date-time
+                      genre:
+                        type: string
+                      summary:
+                        type: string
+                      ISBN:
+                        type: string
+                      coverImage:
+                        type: string
+                      pdfUrl:
+                        type: string
+                      buyHardCopyFrom:
+                        type: string
+                        format: uri
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+
+    delete:
+      tags:
+        - Books
+      summary: Delete a book
+      responses:
+        "200":
+          description: Book deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+
+  /books/change-cover/{book_id}:
+    parameters:
+      - name: book_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the book
+    put:
+      tags:
+        - Books
+      summary: Update book cover image
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                coverImage:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Cover image updated successfully
+
+  /books/change-pdf/{book_id}:
+    parameters:
+      - name: book_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the book
+    put:
+      tags:
+        - Books
+      summary: Update book PDF file
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                pdfFile:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: PDF file updated successfully
+
+  # Reviews Endpoints
+  /reviews/{book_id}:
+    parameters:
+      - name: book_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the book
+    post:
+      tags:
+        - Reviews
+      summary: Add a review for a book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - rating
+                - comment
+              properties:
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                comment:
+                  type: string
+      responses:
+        "201":
+          description: Review added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      bookId:
+                        type: string
+                      userId:
+                        type: string
+                      comment:
+                        type: string
+                      rating:
+                        type: integer
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+
+    get:
+      tags:
+        - Reviews
+      summary: Get all reviews for a book
+      responses:
+        "200":
+          description: Reviews retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        bookId:
+                          type: string
+                        userId:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                            name:
+                              type: string
+                            avatar:
+                              type: string
+                              format: uri
+                        comment:
+                          type: string
+                        rating:
+                          type: integer
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+                  pagination:
+                    type: object
+                    properties:
+                      totalReviews:
+                        type: integer
+                      page:
+                        type: integer
+                      limit:
+                        type: integer
+                      totalPages:
+                        type: integer
+                      hasNextPage:
+                        type: boolean
+                      hasPrevPage:
+                        type: boolean
+
+  /reviews/{review_id}:
+    parameters:
+      - name: review_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the review
+    put:
+      tags:
+        - Reviews
+      summary: Update a review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                comment:
+                  type: string
+      responses:
+        "200":
+          description: Review updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      bookId:
+                        type: string
+                      userId:
+                        type: string
+                      comment:
+                        type: string
+                      rating:
+                        type: integer
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+
+    delete:
+      tags:
+        - Reviews
+      summary: Delete a review
+      responses:
+        "200":
+          description: Review deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+
+  # Favorites Endpoints
+  /favorites:
+    get:
+      tags:
+        - Favorites
+      summary: Get user's favorite books
+      responses:
+        "200":
+          description: Favorites retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        bookId:
+                          type: string
+                        userId:
+                          type: string
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      limit:
+                        type: integer
+                      totalPages:
+                        type: integer
+                      hasNextPage:
+                        type: boolean
+                      hasPrevPage:
+                        type: boolean
+
+  /favorites/{book_id}:
+    parameters:
+      - name: book_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the book
+    post:
+      tags:
+        - Favorites
+      summary: Add a book to favorites
+      responses:
+        "201":
+          description: Book added to favorites successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      bookId:
+                        type: string
+                      userId:
+                        type: string
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+
+    delete:
+      tags:
+        - Favorites
+      summary: Remove a book from favorites
+      responses:
+        "200":
+          description: Book removed from favorites successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+
+  # Seeds Endpoints
+  /seeds/add-books:
+    post:
+      tags:
+        - Seeds
+      summary: Add sample books to the database
+      responses:
+        "200":
+          description: Sample books added successfully

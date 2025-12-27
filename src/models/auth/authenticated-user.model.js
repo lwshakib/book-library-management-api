@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { UserModel } from "./user.model.js";
 import { SendMailEnum } from "../../constants.js";
-import { sendMail } from "../../utils/mail.js";
+import { sendEmail } from "../../utils/mail.js";
 
 const authenticatedUserSchema = new mongoose.Schema(
   {
@@ -72,7 +72,6 @@ authenticatedUserSchema.methods.generateAccessToken = function () {
 authenticatedUserSchema.methods.generateTemporaryCode = function () {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
-
 
 export const AuthenticatedUserModel = mongoose.model(
   "authenticated-users",

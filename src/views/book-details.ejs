@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= pageTitle %></title>
+    <meta name="description" content="<%= pageDescription %>" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="book" />
+    <meta property="og:title" content="<%= pageTitle %>" />
+    <meta property="og:description" content="<%= pageDescription %>" />
+    <% if (canonicalUrl) { %>
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <meta property="og:url" content="<%= canonicalUrl %>" />
+    <% } %>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#2563EB" />
+    <link rel="stylesheet" href="/css/app.css" />
+    <script src="/js/theme.js" defer></script>
+    <script src="/js/book-details.js" defer></script>
+  </head>
+  <body>
+    <%- include('partials/header', { activePage: activePage || 'home' }) %>
+
+    <main id="main-content" class="page book-page" role="main">
+      <% if (!book) { %>
+      <section
+        class="section-card section-card--stack empty-state"
+        aria-live="polite"
+      >
+        <h1>Book not found</h1>
+        <p>
+          The book you are looking for may have been removed or never existed.
+        </p>
+      </section>
+      <% } else { %>
+      <article
+        class="section-card section-card--stack"
+        itemscope
+        itemtype="https://schema.org/Book"
+      >
+        <div class="layout">
+          <figure class="cover" itemprop="image">
+            <% if (book.coverImage) { %>
+            <img
+              src="<%= book.coverImage %>"
+              alt="Cover of <%= book.title %>"
+            />
+            <% } else { %>
+            <div class="placeholder" aria-hidden="true">No cover available</div>
+            <% } %>
+          </figure>
+
+          <div class="main-column">
+            <section
+              class="section-card section-card--stack"
+              aria-labelledby="book-title"
+            >
+              <h1 id="book-title" itemprop="name"><%= book.title %></h1>
+              <p class="muted">
+                By <strong itemprop="author"><%= book.author %></strong> •
+                <time itemprop="datePublished"><%= book.publishedLabel %></time>
+                • <span itemprop="genre"><%= book.genre || "General" %></span>
+              </p>
+              <div
+                class="rating"
+                itemprop="aggregateRating"
+                itemscope
+                itemtype="https://schema.org/AggregateRating"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="margin-right:6px">
+                  <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <span itemprop="ratingValue"
+                  ><%= reviewStats.averageRating.toFixed(1) %></span
+                >/5
+                <span class="rating-count"
+                  >(<%= reviewStats.reviewCount %> reviews)</span
+                >
+                <meta
+                  itemprop="reviewCount"
+                  content="<%= reviewStats.reviewCount %>"
+                />
+              </div>
+              <div class="actions">
+                <% if (book.pdfUrl) { %>
+                <a
+                  class="btn"
+                  href="<%= book.pdfUrl %>"
+                  target="_blank"
+                  rel="noopener"
+                  >Read PDF</a
+                >
+                <% } %> <% if (book.buyHardCopyFrom) { %>
+                <a
+                  class="btn"
+                  href="<%= book.buyHardCopyFrom %>"
+                  target="_blank"
+                  rel="noopener"
+                  >Buy Hard Copy</a
+                >
+                <% } %>
+                <button
+                  id="favBtn"
+                  class="btn <%= isFavorite ? 'btn-primary' : '' %>"
+                  type="button"
+                  data-favored="<%= isFavorite ? 'true' : 'false' %>"
+                  data-book-id="<%= book._id %>"
+                >
+                  <span id="favText"
+                    ><%= isFavorite ? 'Favorited' : 'Add to Favorites' %></span
+                  >
+                </button>
+              </div>
+            </section>
+
+            <section
+              class="section-card section-card--stack description-block"
+              aria-labelledby="description-heading"
+            >
+              <h2 id="description-heading" class="section-title">
+                Description
+              </h2>
+              <p itemprop="description"><%= book.description %></p>
+              <% if (book.summary) { %>
+              <p><strong>Summary:</strong> <%= book.summary %></p>
+              <% } %> <% if (book.ISBN) { %>
+              <p>
+                <strong>ISBN:</strong>
+                <span itemprop="isbn"><%= book.ISBN %></span>
+              </p>
+              <% } %>
+            </section>
+
+            <form
+              id="reviewForm"
+              class="section-card review-form section-card--stack"
+              method="post"
+              action="/reviews/<%= book._id %>"
+              aria-labelledby="review-form-heading"
+            >
+              <h2 id="review-form-heading" class="section-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="margin-right:6px;vertical-align:-2px">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm14.71-9.04c.2-.2.2-.51 0-.71l-2.21-2.21a.5.5 0 0 0-.71 0l-1.83 1.83 3.75 3.75 1.99-1.99z"/>
+                </svg>
+                Write a review
+              </h2>
+              <div class="form-row">
+                <label for="rating">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="margin-right:6px;vertical-align:-2px">
+                    <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
+                  Rating (1-5)
+                </label>
+                <input
+                  id="rating"
+                  name="rating"
+                  type="number"
+                  min="1"
+                  max="5"
+                  required
+                />
+              </div>
+              <div class="form-row">
+                <label for="comment">Comment</label>
+                <textarea
+                  id="comment"
+                  name="comment"
+                  rows="4"
+                  required
+                ></textarea>
+              </div>
+              <div class="actions">
+                <button class="btn btn-primary" type="submit">
+                  Submit Review
+                </button>
+              </div>
+            </form>
+
+            <section
+              id="reviewsBox"
+              class="section-card reviews section-card--stack"
+              aria-labelledby="reviews-heading"
+              data-review-count="<%= reviewStats.reviewCount || 0 %>"
+              data-review-average="<%= reviewStats.averageRating || 0 %>"
+            >
+              <h2 id="reviews-heading" class="section-title">Reviews</h2>
+              <ul class="reviews-list">
+                <% if (reviews && reviews.length > 0) { %> <%
+                reviews.forEach(function (r) { %>
+                <li class="review">
+                  <div class="reviews-actions">
+                    <strong>Rating:</strong>
+                    <span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="margin-right:4px">
+                        <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <%= r.rating %>/5
+                    </span>
+                  </div>
+                  <% if (r.comment) { %>
+                  <p class="review-text"><%= r.comment %></p>
+                  <% } %>
+                  <div class="sub">
+                    <%= new Date(r.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric", month: "short", day: "numeric" }) %>
+                  </div>
+                </li>
+                <% }); %> <% } %>
+              </ul>
+              <% if (!reviews || reviews.length === 0) { %>
+              <p class="reviews-empty">No reviews yet.</p>
+              <% } %>
+            </section>
+          </div>
+        </div>
+      </article>
+      <% } %>
+    </main>
+  </body>
+</html>

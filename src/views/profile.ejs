@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= pageTitle %></title>
+    <meta name="description" content="<%= pageDescription %>" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content="<%= pageTitle %>" />
+    <meta property="og:description" content="<%= pageDescription %>" />
+    <% if (canonicalUrl) { %>
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <meta property="og:url" content="<%= canonicalUrl %>" />
+    <% } %>
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#2563EB" />
+    <link rel="stylesheet" href="/css/app.css" />
+    <script src="/js/theme.js" defer></script>
+  </head>
+  <body>
+    <%- include('partials/header', { activePage: 'profile' }) %>
+
+    <main id="main-content" class="page page--compact profile-page" role="main">
+      <article class="profile-card" itemscope itemtype="https://schema.org/Person">
+        <header class="profile">
+          <div class="avatar" aria-hidden="true">
+            <% if (profile && profile.avatar) { %>
+            <img src="<%= profile.avatar %>" alt="Avatar for <%= user?.username || profile?.fullName || 'User' %>" />
+            <% } else { %>
+            <span class="avatar__initial"><%= (user?.username || user?.email || "U").substring(0, 1).toUpperCase() %></span>
+            <% } %>
+          </div>
+          <div class="meta">
+            <h1 itemprop="name"><%= profile?.fullName || user?.username || "Reader" %></h1>
+            <p class="muted" itemprop="email"><%= user?.email %></p>
+            <div class="badges">
+              <span class="badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 1l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-8.5L2 8h7z"></path>
+                </svg>
+                <%= (user?.role || "USER").toString().toUpperCase() %>
+              </span>
+              <span class="badge badge--muted">
+                Member since
+                <time datetime="<%= user?.createdAt %>">
+                  <%= (user?.createdAt ? new Date(user.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) : "Recently") %>
+                </time>
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <section class="profile-grid" aria-label="Account highlights">
+          <article class="tile">
+            <h3>Account</h3>
+            <p class="muted">Role: <strong><%= user?.role || "USER" %></strong></p>
+            <p class="muted">Username: <%= user?.username || "—" %></p>
+          </article>
+          <article class="tile">
+            <h3>Profile</h3>
+            <p class="muted">Full name: <%= profile?.fullName || "—" %></p>
+            <p class="muted">Bio: <%= profile?.bio || "Set a short bio to let others know about your reading taste." %></p>
+            <div class="actions">
+              <a class="btn" href="/profile">Edit Profile</a>
+            </div>
+          </article>
+          <article class="tile">
+            <h3>Library</h3>
+            <p class="muted">
+              Explore the latest arrivals or revisit your saved favorites to keep reading momentum.
+            </p>
+            <div class="actions">
+              <a class="btn" href="/">Browse Books</a>
+              <a class="btn" href="/favorite-books">View Favorites</a>
+            </div>
+          </article>
+        </section>
+
+        <section class="profile-grid" aria-label="Security and preferences">
+          <article class="tile">
+            <h3>Security</h3>
+            <p class="muted">Keep your account secure by using a strong password and enabling 2FA when available.</p>
+            <div class="actions">
+              <a class="btn" href="/sign-out">Sign out</a>
+            </div>
+          </article>
+          <article class="tile">
+            <h3>Preferences</h3>
+            <p class="muted">Switch appearance with the theme toggle in the header. Your choice is saved on this device.</p>
+          </article>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

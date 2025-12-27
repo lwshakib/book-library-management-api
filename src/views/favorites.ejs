@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= pageTitle %></title>
+    <meta name="description" content="<%= pageDescription %>" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="<%= pageTitle %>" />
+    <meta property="og:description" content="<%= pageDescription %>" />
+    <% if (canonicalUrl) { %>
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <meta property="og:url" content="<%= canonicalUrl %>" />
+    <% } %>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#2563EB" />
+    <link rel="stylesheet" href="/css/app.css" />
+    <script src="/js/theme.js" defer></script>
+  </head>
+  <body>
+    <%- include('partials/header', { activePage: 'favorites' }) %>
+
+    <main id="main-content" class="page favorites-page" role="main">
+      <header class="page-intro">
+        <h1>Your favorite books</h1>
+        <p>Every title you save for later lives here. Dive back in when you're ready.</p>
+      </header>
+
+      <% if (books && books.length > 0) { %>
+      <section aria-labelledby="saved-books" class="section-card section-card--stack">
+        <h2 id="saved-books" class="section-title">Saved for later</h2>
+        <div class="books-grid books-grid--compact">
+          <% books.forEach(function (book) { %>
+          <article class="book-card book-card--compact" itemscope itemtype="https://schema.org/Book">
+            <div class="book-cover">
+              <% if (book.coverImage) { %>
+              <a href="/book/<%= book._id %>" itemprop="url">
+                <img
+                  src="<%= book.coverImage %>"
+                  alt="Cover of <%= book.title %>"
+                  loading="lazy"
+                  itemprop="image"
+                />
+              </a>
+              <% } else { %>
+              <div class="placeholder" aria-hidden="true">Cover coming soon</div>
+              <% } %>
+            </div>
+            <div class="book-content">
+              <h3 itemprop="name">
+                <a href="/book/<%= book._id %>"><%= book.title %></a>
+              </h3>
+              <p class="book-meta">
+                <span>By <strong itemprop="author"><%= book.author %></strong></span>
+                <span>Published <time itemprop="datePublished"><%= book.publishedLabel %></time></span>
+                <span>Genre: <span itemprop="genre"><%= book.genre || "General" %></span></span>
+              </p>
+            </div>
+          </article>
+          <% }); %>
+        </div>
+      </section>
+
+      <% if (pagination && pagination.totalPages > 1) { %>
+      <nav class="pagination" role="navigation" aria-label="Favorites pagination">
+        <% const currentPage = pagination.page;
+           const totalPages = pagination.totalPages;
+           const prevDisabled = !pagination.hasPrevPage ? "disabled" : "";
+           const nextDisabled = !pagination.hasNextPage ? "disabled" : "";
+           const windowSize = 5;
+           const half = Math.floor(windowSize / 2);
+           let start = Math.max(1, currentPage - half);
+           let end = Math.min(totalPages, start + windowSize - 1);
+           if (end - start + 1 < windowSize) {
+             start = Math.max(1, end - windowSize + 1);
+           }
+        %>
+        <a class="<%= prevDisabled %>" href="/favorite-books?page=<%= pagination.prevPage || 1 %>">Prev</a>
+        <% if (start > 1) { %>
+          <a href="/favorite-books?page=1">1</a>
+          <% if (start > 2) { %><span aria-hidden="true">…</span><% } %>
+        <% } %>
+        <% for (let p = start; p <= end; p++) { %>
+          <% if (p === currentPage) { %>
+          <span class="active" aria-current="page"><%= p %></span>
+          <% } else { %>
+          <a href="/favorite-books?page=<%= p %>"><%= p %></a>
+          <% } %>
+        <% } %>
+        <% if (end < totalPages) { %>
+          <% if (end < totalPages - 1) { %><span aria-hidden="true">…</span><% } %>
+          <a href="/favorite-books?page=<%= totalPages %>"><%= totalPages %></a>
+        <% } %>
+        <a class="<%= nextDisabled %>" href="/favorite-books?page=<%= pagination.nextPage || totalPages %>">Next</a>
+      </nav>
+      <% } %>
+      <% } else { %>
+      <section class="empty-state" aria-live="polite">
+        <h2>No favorites yet</h2>
+        <p>Add books to your favorites to build a personal reading list.</p>
+      </section>
+      <% } %>
+    </main>
+  </body>
+</html>

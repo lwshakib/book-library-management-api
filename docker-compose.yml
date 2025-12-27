@@ -1,0 +1,24 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongo_container
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - open_library_network
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog_container
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - open_library_network
+
+volumes:
+  mongo_data:
+networks:
+  open_library_network:

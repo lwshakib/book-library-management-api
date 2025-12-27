@@ -1,6 +1,6 @@
 # Book Library Management System
 
-A comprehensive full-stack digital library management system built with Node.js, featuring user authentication, book management, reviews, favorites, and a robust email notification system.
+A comprehensive full-stack digital library management system built with Node.js, featuring user authentication, book management, reviews, favorites, and email notifications.
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org)
@@ -29,11 +29,10 @@ A comprehensive full-stack digital library management system built with Node.js,
 
 ### Email System
 
-- **Queue-based Processing**: Reliable email delivery using BullMQ and Redis
+- **Direct Email Delivery**: Reliable email delivery using Nodemailer
 - **Multiple Templates**: Welcome emails, verification, password reset, and security alerts
 - **Development Support**: MailHog integration for local email testing
 - **Production Ready**: Gmail SMTP support for production environments
-- **Retry Logic**: Automatic retry with exponential backoff for failed emails
 
 ### API & Documentation
 
@@ -64,15 +63,15 @@ This project follows a monolithic architecture with modular design:
          │
          ▼
 ┌─────────────────┐    ┌─────────────────┐
-│   Express API   │◄──►│  Email Service  │
-│   (Backend)     │    │   (BullMQ)      │
-└────────┬────────┘    └────────┬────────┘
-         │                      │
-         ▼                      ▼
-┌─────────────────┐    ┌─────────────────┐
-│    MongoDB      │    │      Redis      │
-│   (Database)    │    │  (Queue/Cache)  │
-└─────────────────┘    └─────────────────┘
+│   Express API   │───►│  Email Service  │
+│   (Backend)     │    │  (Nodemailer)   │
+└────────┬────────┘    └─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│    MongoDB      │
+│   (Database)    │
+└─────────────────┘
 ```
 
 ## 📁 Project Structure
@@ -163,13 +162,12 @@ book-library-management-api/
 - **Logging**: Winston + Morgan
 - **Security**: bcryptjs, express-rate-limit, CORS
 - **File Upload**: Multer
-- **Email**: Nodemailer with BullMQ queue
+- **Email**: Nodemailer
 - **Template Engine**: EJS
 
 ### Infrastructure
 
 - **Database**: MongoDB
-- **Cache/Queue**: Redis (for BullMQ)
 - **Email Testing**: MailHog
 - **Containerization**: Docker Compose
 - **Development**: Nodemon for hot reloading
@@ -382,11 +380,10 @@ docker-compose up -d --build
 
 The email service provides:
 
-- **Queue-based Processing**: Reliable email delivery using BullMQ
+- **Direct Delivery**: Synchronous email delivery using Nodemailer
 - **Multiple Templates**: Welcome, verification, password reset, security alerts
 - **Development Support**: MailHog integration for testing
 - **Production Ready**: Gmail SMTP support for production
-- **Retry Logic**: Automatic retry with exponential backoff
 - **HTML Templates**: Professional email templates with inline CSS
 
 ### Email Testing (Development)
@@ -425,7 +422,6 @@ GMAIL_PASS=your-gmail-app-password
 ### Production Considerations
 
 - Use a production MongoDB instance (MongoDB Atlas recommended)
-- Set up Redis for email queue (if using BullMQ)
 - Configure Gmail SMTP or other email service for email delivery
 - Set up proper logging and monitoring
 - Use environment-specific secrets (strong, random values)
@@ -467,7 +463,7 @@ If you encounter any issues or have questions:
 
 - Express.js team for the excellent web framework
 - MongoDB team for the powerful database
-- BullMQ team for the robust queue system
+- Nodemailer team for the reliable email solution
 - All contributors who help improve this project
 
 ## 📝 Changelog
@@ -485,4 +481,4 @@ If you encounter any issues or have questions:
 
 ---
 
-**Built with ❤️ using Node.js, Express, MongoDB, and BullMQ**
+**Built with ❤️ using Node.js, Express, and MongoDB**

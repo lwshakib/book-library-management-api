@@ -26,6 +26,7 @@ This project and everyone participating in it is governed by our [Code of Conduc
 Before you begin, ensure you have:
 
 - Node.js (v14 or higher)
+- Bun (for running tests and as an alternative package manager)
 - Docker and Docker Compose
 - Git
 - A code editor (VS Code recommended)
@@ -165,10 +166,11 @@ git checkout -b fix/issue-number-description
 ### 2. Make Your Changes
 
 - Write clean, readable code
-- Follow the existing code style
+- Follow the existing code style and formatting
+- Run `npm run format` before committing to ensure consistent style
 - Add comments for complex logic
 - Update documentation if needed
-- Add tests for new functionality
+- Add integration tests for new functionality in the `__tests__` directory
 
 ### 3. Test Your Changes
 
@@ -176,11 +178,14 @@ git checkout -b fix/issue-number-description
 # Start the development server
 npm run dev
 
+# Run automated tests
+npm test
+
+# Check code formatting
+npm run format:check
+
 # Test the API using Swagger
 # Visit http://localhost:7000/docs
-
-# Test email functionality
-# Visit http://localhost:8025 to check MailHog
 ```
 
 ### 4. Commit Your Changes
@@ -346,6 +351,9 @@ Any other context, mockups, or examples
 
 ```
 book-library-management-api/
+├── __tests__/               # Integration testing suite
+│   ├── setup.js             # Global test setup (In-memory DB)
+│   └── ...test.js           # Route-specific integration tests
 ├── src/
 │   ├── controllers/           # Route handlers and business logic
 │   ├── models/               # Mongoose database models
@@ -366,7 +374,9 @@ book-library-management-api/
 │   └── constants.js         # Application constants
 ├── public/                  # Static assets
 ├── logs/                    # Application logs
-└── docker-compose.yml       # Development services
+├── .github/                 # GitHub configuration (Workflows, Issue Templates)
+├── docker-compose.yml       # Development services & orchestratiom
+└── Dockerfile               # Application containerization
 ```
 
 ### Key Areas for Contribution
@@ -504,35 +514,30 @@ throw new ApiError(400, "Error message");
 
 ## 🧪 Testing Guidelines
 
+### Automated Testing
+
+This project uses **Bun** as the test runner and **Supertest** for making HTTP requests to the API.
+
+1. **Running Tests**
+
+   ```bash
+   # Run all tests once
+   npm test
+
+   # Run tests in watch mode
+   bun test --watch
+   ```
+
+2. **Writing Tests**
+   - Place all tests in the `__tests__` directory
+   - Use `.test.js` or `.spec.js` suffix
+   - Use the `setup.js` file for global configuration
+   - Mock external services (like email) when necessary
+
+3. **CI/CD Validation**
+   All pull requests are automatically tested via GitHub Actions. You can check the status of these tests in the "Checks" tab of your PR.
+
 ### Manual Testing
-
-1. **API Testing**
-   - Use Swagger UI: http://localhost:7000/docs
-   - Test all endpoints
-   - Verify error handling
-   - Check response formats
-   - Test with invalid inputs
-
-2. **Email Testing**
-   - Use MailHog: http://localhost:8025
-   - Test all email templates
-   - Verify email content
-   - Check email delivery
-
-3. **Authentication Testing**
-   - Test sign-up/sign-in flow
-   - Verify JWT tokens
-   - Test OAuth integration (Google, GitHub)
-   - Check password reset flow
-   - Test email verification
-
-4. **UI Testing**
-   - Test all pages (home, book details, profile, favorites)
-   - Verify responsive design
-   - Check form validations
-   - Test navigation
-
-### Test Cases to Consider
 
 - **Happy Path**: Normal user flow
 - **Edge Cases**: Boundary conditions, empty states

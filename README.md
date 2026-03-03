@@ -5,6 +5,7 @@ A comprehensive full-stack digital library management system built with Node.js,
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![CI](https://github.com/lwshakib/book-library-management-api/actions/workflows/ci.yml/badge.svg)](https://github.com/lwshakib/book-library-management-api/actions/workflows/ci.yml)
 
 ## 🚀 Features
 
@@ -16,6 +17,8 @@ A comprehensive full-stack digital library management system built with Node.js,
 - **Favorites**: Personal bookmark system for users to save their favorite books
 - **Search & Filter**: Advanced book search with filtering, sorting, and pagination
 - **Profile Management**: User profile viewing and management
+- **Automated Testing**: Comprehensive integration test suite for all major routes
+- **CI/CD Pipeline**: Automated testing and code quality checks via GitHub Actions
 
 ### Authentication & Security
 
@@ -78,6 +81,16 @@ This project follows a monolithic architecture with modular design:
 
 ```
 book-library-management-api/
+├── .github/                 # GitHub configuration
+│   ├── workflows/           # CI/CD pipelines (GitHub Actions)
+│   └── ISSUE_TEMPLATE/       # Standardized issue templates
+├── __tests__/               # Integration testing suite
+│   ├── auth.test.js
+│   ├── books.test.js
+│   ├── favorites.test.js
+│   ├── health.test.js
+│   ├── reviews.test.js
+│   └── setup.js             # Test environment setup
 ├── src/
 │   ├── controllers/           # Route handlers and business logic
 │   │   ├── auth.controllers.js
@@ -137,11 +150,14 @@ book-library-management-api/
 │   ├── images/
 │   └── uploads/
 ├── logs/                    # Application logs
-├── docker-compose.yml       # Development services
+├── docker-compose.yml       # Development services & Full App orchestration
+├── Dockerfile               # Application containerization
 ├── package.json
 ├── .env.example
 ├── .gitignore
 ├── .dockerignore
+├── .prettierrc.yaml         # Code formatting configuration
+├── .prettierignore
 ├── nodemon.json
 ├── README.md
 ├── CONTRIBUTING.md
@@ -164,12 +180,15 @@ book-library-management-api/
 - **File Upload**: Multer
 - **Email**: Nodemailer
 - **Template Engine**: EJS
+- **Testing**: Bun (Test Runner), Supertest, MongoDB Memory Server
+- **Formatting**: Prettier
+- **CI/CD**: GitHub Actions
 
 ### Infrastructure
 
 - **Database**: MongoDB
 - **Email Testing**: MailHog
-- **Containerization**: Docker Compose
+- **Containerization**: Docker & Docker Compose
 - **Development**: Nodemon for hot reloading
 
 ## 🚀 Quick Start
@@ -312,10 +331,11 @@ For complete API documentation with request/response examples, visit: http://loc
 ### Available Scripts
 
 ```bash
-npm start          # Start production server
-npm run dev        # Start development server with hot reload
-npm run build      # No build step required (Node.js)
-npm test           # Run tests (to be implemented)
+npm start             # Start production server
+npm run dev           # Start development server with hot reload
+npm test              # Run integration tests (using Bun)
+npm run format        # Format code with Prettier
+npm run format:check  # Check code formatting
 ```
 
 ### Database Seeding
@@ -393,11 +413,25 @@ The email service provides:
 3. Trigger email actions in the application
 4. View sent emails in MailHog interface
 
-## 🧪 Testing
+### Automated Tests
 
-### Manual Testing
+The project includes a comprehensive suite of integration tests. Tests use `mongodb-memory-server` to run against a real but isolated database.
 
-Use the Swagger UI at http://localhost:7000/docs for interactive API testing.
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+bun test --watch
+```
+
+### CI/CD Pipeline
+
+Every push and pull request to the `main` branch triggers an automated workflow that:
+
+1. Installs dependencies
+2. Checks code formatting
+3. Runs the full test suite
 
 ### Email Testing
 

@@ -130,7 +130,7 @@ export const verifyEmailSuccessTemplate = (context) => {
                 hour: "2-digit",
                 minute: "2-digit",
                 timeZoneName: "short",
-              }
+              },
             )}</p>
           </div>
         </div>
@@ -155,7 +155,7 @@ export const verifyEmailSuccessTemplate = (context) => {
   const text = `Congratulations ${
     context.name
   }!\n\nYour email address has been successfully verified. You're now a verified member of the OpenLibrary community!\n\nYour account is now fully activated and ready to use.\n\nVerification Details: Email verified on ${new Date().toLocaleString(
-    "en-US"
+    "en-US",
   )}.\n\nHappy reading!\nOpenLibrary Team`;
 
   return { html, text };

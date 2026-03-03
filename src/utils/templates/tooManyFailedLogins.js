@@ -50,7 +50,7 @@ export const tooManyFailedLoginsTemplate = (context) => {
                       hour: "2-digit",
                       minute: "2-digit",
                       timeZoneName: "short",
-                    }
+                    },
                   )}</p>
                 </div>
               </div>
@@ -151,7 +151,7 @@ export const tooManyFailedLoginsTemplate = (context) => {
   `;
 
   const text = `Security Alert: Your OpenLibrary account has been temporarily locked due to multiple failed login attempts.\n\nTime: ${new Date().toLocaleString(
-    "en-US"
+    "en-US",
   )}\nIP Address: ${
     context.ipAddress || "Unknown"
   }\n\nTo unlock your account, please reset your password.\n\nOpenLibrary Security Team`;

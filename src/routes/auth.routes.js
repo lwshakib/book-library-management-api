@@ -30,7 +30,7 @@ authRouter.route("/google").get(
   }),
   (req, res) => {
     res.send("redirecting to google...");
-  }
+  },
 );
 
 authRouter.route("/github").get(
@@ -39,7 +39,7 @@ authRouter.route("/github").get(
   }),
   (req, res) => {
     res.send("redirecting to github...");
-  }
+  },
 );
 
 authRouter

@@ -372,37 +372,31 @@ book-library-management-api/
 ### Key Areas for Contribution
 
 1. **Controllers (`/src/controllers/`)**
-
    - Business logic for routes
    - Request/response handling
    - Data validation and processing
 
 2. **Models (`/src/models/`)**
-
    - Database schemas
    - Model methods and virtuals
    - Indexes and validators
 
 3. **Routes (`/src/routes/`)**
-
    - API endpoint definitions
    - Route middleware
    - Route documentation
 
 4. **Middlewares (`/src/middlewares/`)**
-
    - Authentication middleware
    - Error handling
    - File upload handling
 
 5. **Utils (`/src/utils/`)**
-
    - Helper functions
    - Email templates
    - Common utilities
 
 6. **Views (`/src/views/`)**
-
    - EJS templates
    - Frontend pages
    - Partials and components
@@ -490,7 +484,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export const UserModel = mongoose.model("User", userSchema);
@@ -513,7 +507,6 @@ throw new ApiError(400, "Error message");
 ### Manual Testing
 
 1. **API Testing**
-
    - Use Swagger UI: http://localhost:7000/docs
    - Test all endpoints
    - Verify error handling
@@ -521,14 +514,12 @@ throw new ApiError(400, "Error message");
    - Test with invalid inputs
 
 2. **Email Testing**
-
    - Use MailHog: http://localhost:8025
    - Test all email templates
    - Verify email content
    - Check email delivery
 
 3. **Authentication Testing**
-
    - Test sign-up/sign-in flow
    - Verify JWT tokens
    - Test OAuth integration (Google, GitHub)

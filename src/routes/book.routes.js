@@ -21,7 +21,7 @@ bookRouter.post(
     { name: "coverImage", maxCount: 1 },
     { name: "pdfFile", maxCount: 1 },
   ]),
-  createBook
+  createBook,
 );
 bookRouter.get("/:bookId", getBookById); // Assuming getBooks can handle both all books and a specific book by ID
 bookRouter.patch("/:bookId", verifyAdmin, updateBook); // Assuming this is for updating a book by ID
@@ -31,12 +31,12 @@ bookRouter.put(
   "/change-cover/:bookId",
   verifyAdmin,
   upload.fields([{ name: "coverImage", maxCount: 1 }]),
-  changeBookCover
+  changeBookCover,
 ); // Assuming this is for changing the cover image of a book by ID
 
 bookRouter.put(
   "/change-pdf/:bookId",
   verifyAdmin,
   upload.fields([{ name: "pdfFile", maxCount: 1 }]),
-  changeBookPdf
+  changeBookPdf,
 ); // Assuming this is for changing the PDF of a book by ID

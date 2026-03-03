@@ -29,13 +29,26 @@
 }
 * {
   box-sizing: border-box;
-  transition: background-color 0.18s ease, color 0.18s ease,
-    border-color 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
-    Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji",
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Ubuntu,
+    Cantarell,
+    Noto Sans,
+    Helvetica Neue,
+    Arial,
+    "Apple Color Emoji",
     "Segoe UI Emoji";
   background: var(--page);
   min-height: 100vh;
@@ -97,7 +110,10 @@ body {
   border-radius: 999px;
   background: transparent;
   border: 1px solid transparent;
-  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
     transform 0.18s ease;
 }
 .nav-link:hover {
@@ -122,7 +138,8 @@ body {
   gap: 8px;
   cursor: pointer;
   font-weight: 600;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12),
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
     0 6px 18px -18px var(--shadow);
 }
 .theme-toggle:hover {
@@ -206,7 +223,9 @@ header p {
   padding: 10px 12px;
   border-radius: 12px;
   background: var(--surface-muted);
-  transition: background 0.18s ease, transform 0.18s ease;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
 }
 .author-item:hover {
   background: var(--accent-soft);
@@ -245,7 +264,9 @@ header p {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 .book-card--compact {
   border-radius: 12px;
@@ -358,7 +379,9 @@ header p {
   padding: 6px 12px;
   border-radius: 10px;
   background: var(--accent-soft);
-  transition: background 0.18s ease, transform 0.18s ease;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
 }
 .book-links a:hover {
   background: var(--accent-strong);
@@ -539,7 +562,9 @@ header p {
   font-weight: 600;
   font-size: 13px;
   border: 1px solid transparent;
-  transition: background 0.18s ease, transform 0.18s ease,
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease,
     border-color 0.18s ease;
 }
 .btn:hover {

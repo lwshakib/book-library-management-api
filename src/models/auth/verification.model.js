@@ -42,10 +42,10 @@ const verificationSchema = new mongoose.Schema(
   {
     timestamps: true,
     versionKey: false,
-  }
+  },
 );
 
 export const VerificationModel = mongoose.model(
   "verifications",
-  verificationSchema
+  verificationSchema,
 );

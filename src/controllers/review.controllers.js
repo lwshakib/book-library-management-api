@@ -54,7 +54,7 @@ export const getReviewsByBook = asyncHandler(async (req, res) => {
       totalPages: Math.ceil(totalReviews / limit),
       hasNextPage: page * limit < totalReviews,
       hasPrevPage: page > 1,
-    })
+    }),
   );
 });
 export const deleteReview = asyncHandler(async (req, res) => {
@@ -99,7 +99,7 @@ export const updateReview = asyncHandler(async (req, res) => {
   const updatedReview = await Review.findByIdAndUpdate(
     reviewId,
     { rating, comment },
-    { new: true }
+    { new: true },
   );
 
   if (!updatedReview) {

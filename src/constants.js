@@ -33,7 +33,6 @@ export const UserStatusEnum = {
   DELETED: "DELETED",
 };
 
-
 export const BookGenreEnum = {
   FICTION: "Fiction",
   NON_FICTION: "Non-Fiction",

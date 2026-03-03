@@ -42,7 +42,7 @@ const authenticatedUserSchema = new mongoose.Schema(
   {
     timestamps: true,
     versionKey: false,
-  }
+  },
 );
 
 authenticatedUserSchema.pre("save", async function (next) {
@@ -54,7 +54,7 @@ authenticatedUserSchema.pre("save", async function (next) {
 });
 
 authenticatedUserSchema.methods.comparePassword = async function (
-  candidatePassword
+  candidatePassword,
 ) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
@@ -65,7 +65,7 @@ authenticatedUserSchema.methods.generateAccessToken = function () {
     process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
-    }
+    },
   );
 };
 
@@ -75,5 +75,5 @@ authenticatedUserSchema.methods.generateTemporaryCode = function () {
 
 export const AuthenticatedUserModel = mongoose.model(
   "authenticated-users",
-  authenticatedUserSchema
+  authenticatedUserSchema,
 );

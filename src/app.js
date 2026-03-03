@@ -32,8 +32,8 @@ const file = fs.readFileSync(path.resolve(__dirname, "./swagger.yaml"), "utf8");
 const swaggerDocument = YAML.parse(
   file?.replace(
     "- url: ${{server}}",
-    `- url: ${process.env.BACKEND_URL || "http://localhost:7000"}`
-  )
+    `- url: ${process.env.BACKEND_URL || "http://localhost:7000"}`,
+  ),
 );
 
 const app = express();
@@ -54,7 +54,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // Allow cookies to be sent with requests
     preflightContinue: false,
-  })
+  }),
 );
 
 app.use(requestIp.mw());
@@ -74,7 +74,7 @@ const limiter = rateLimit({
       options.statusCode || 500,
       `There are too many requests. You are only allowed ${
         options.max
-      } requests per ${options.windowMs / 60000} minutes`
+      } requests per ${options.windowMs / 60000} minutes`,
     );
   },
 });
@@ -90,7 +90,7 @@ app.use(
     secret: process.env.EXPRESS_SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
-  })
+  }),
 ); // session secret
 
 app.use(passport.initialize());
@@ -472,7 +472,7 @@ app.use(
     },
     customSiteTitle: "Book Library API Documentation",
     // customCss: ".swagger-ui .topbar { display: none }", // hide the top bar
-  })
+  }),
 );
 
 app.use(errorHandler);

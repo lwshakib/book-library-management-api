@@ -4,7 +4,7 @@ class ApiResponse {
     data,
     message = "Success",
     pagination = undefined,
-    sort = undefined
+    sort = undefined,
   ) {
     this.statusCode = statusCode;
     this.data = data;

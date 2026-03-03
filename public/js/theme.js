@@ -13,7 +13,7 @@
     if (label) label.textContent = normalized === "dark" ? "Light" : "Dark";
     toggle.setAttribute(
       "aria-label",
-      normalized === "dark" ? "Switch to light theme" : "Switch to dark theme"
+      normalized === "dark" ? "Switch to light theme" : "Switch to dark theme",
     );
     if (sunIcon && moonIcon) {
       sunIcon.hidden = normalized !== "dark";
@@ -27,10 +27,9 @@
   const initialTheme = savedTheme || (systemPrefersDark ? "dark" : "light");
   applyTheme(initialTheme);
   toggle.addEventListener("click", () => {
-    const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    const nextTheme =
+      root.getAttribute("data-theme") === "dark" ? "light" : "dark";
     applyTheme(nextTheme);
     localStorage.setItem(storageKey, nextTheme);
   });
 })();
-
-

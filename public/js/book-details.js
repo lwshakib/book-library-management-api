@@ -3,7 +3,9 @@
   const favBtn = document.getElementById("favBtn");
   const favText = document.getElementById("favText");
   const reviewsBox = document.getElementById("reviewsBox");
-  const reviewsList = reviewsBox ? reviewsBox.querySelector(".reviews-list") : null;
+  const reviewsList = reviewsBox
+    ? reviewsBox.querySelector(".reviews-list")
+    : null;
   const ratingBadge = document.querySelector(".rating");
 
   if (favBtn && favText) {
@@ -66,11 +68,13 @@
         });
         const data = await res.json().catch(() => null);
         if (!res.ok) {
-          const msg = (data && (data.message || data.error)) || "Failed to submit review";
+          const msg =
+            (data && (data.message || data.error)) || "Failed to submit review";
           throw new Error(msg);
         }
         const newCount = reviewCount + 1;
-        const newAverage = (averageRating * reviewCount + payload.rating) / newCount;
+        const newAverage =
+          (averageRating * reviewCount + payload.rating) / newCount;
         reviewCount = newCount;
         averageRating = newAverage;
         reviewsBox.dataset.reviewCount = String(reviewCount);
@@ -108,5 +112,3 @@
       .replace(/'/g, "&#039;");
   }
 })();
-
-

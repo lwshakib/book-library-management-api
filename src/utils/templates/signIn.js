@@ -53,7 +53,7 @@ export const signInTemplate = (context) => {
                       hour: "2-digit",
                       minute: "2-digit",
                       timeZoneName: "short",
-                    }
+                    },
                   )}</p>
                 </div>
               </div>
@@ -64,8 +64,8 @@ export const signInTemplate = (context) => {
                   <p class="text-gray-900">${
                     context.details?.city || "Unknown"
                   }, ${context.details?.region || "Unknown"}, ${
-    context.details?.country_name || "Unknown"
-  }</p>
+                    context.details?.country_name || "Unknown"
+                  }</p>
                 </div>
               </div>
               <div class="flex items-start gap-3 pb-3 border-b border-gray-200">
@@ -188,7 +188,7 @@ export const signInTemplate = (context) => {
     context.name
   }!\n\nNew sign-in detected on your OpenLibrary account:\n\nTime: ${new Date().toLocaleString(
     "en-US",
-    { timeZone: context.details?.timezone || "UTC" }
+    { timeZone: context.details?.timezone || "UTC" },
   )}\nLocation: ${context.details?.city || "Unknown"}\nIP Address: ${
     context.ipAddress || "Unknown"
   }\n\nIf this was you, no action needed.\nIf this wasn't you, please change your password immediately.\n\nOpenLibrary Security Team`;

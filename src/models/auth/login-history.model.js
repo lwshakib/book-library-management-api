@@ -23,16 +23,15 @@ const loginHistorySchema = new mongoose.Schema(
     userAgent: {
       type: String,
       required: true,
-    }
+    },
   },
   {
     timestamps: true,
     versionKey: false,
-  }
+  },
 );
-
 
 export const LoginHistoryModel = mongoose.model(
   "login-histories",
-  loginHistorySchema
+  loginHistorySchema,
 );

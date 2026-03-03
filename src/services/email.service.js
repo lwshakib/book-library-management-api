@@ -71,7 +71,7 @@ export const sendVerificationSuccessEmail = async ({ email, name }) => {
   } catch (error) {
     console.error(
       `❌ Failed to send verification success email to ${email}:`,
-      error
+      error,
     );
     // Don't throw - this is a non-critical notification
   }
@@ -156,7 +156,7 @@ export const sendAccountLockoutNotification = async ({ email, ipAddress }) => {
   } catch (error) {
     console.error(
       `❌ Failed to send account lockout notification to ${email}:`,
-      error
+      error,
     );
     // Don't throw - user should still be locked out even if email fails
   }

@@ -69,6 +69,6 @@ const bookSchema = new mongoose.Schema(
   {
     timestamps: true,
     versionKey: false,
-  }
+  },
 );
 export const Book = mongoose.model("books", bookSchema);

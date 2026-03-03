@@ -19,9 +19,9 @@ passport.deserializeUser(async (id, next) => {
     next(
       new ApiError(
         500,
-        "Something went wrong while deserializing the user. Error: " + error
+        "Something went wrong while deserializing the user. Error: " + error,
       ),
-      null
+      null,
     );
   }
 });
@@ -66,8 +66,8 @@ passport.use(
           next(new ApiError(500, "Error while registering the user"), null);
         }
       }
-    }
-  )
+    },
+  ),
 );
 
 passport.use(
@@ -82,9 +82,9 @@ passport.use(
         return next(
           new ApiError(
             400,
-            "User does not have a public email associated with their account. Please try another login method"
+            "User does not have a public email associated with their account. Please try another login method",
           ),
-          null
+          null,
         );
       }
 
@@ -123,8 +123,8 @@ passport.use(
           next(new ApiError(500, "Error while registering the user"), null);
         }
       }
-    }
-  )
+    },
+  ),
 );
 
 export default passport;

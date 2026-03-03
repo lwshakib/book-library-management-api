@@ -161,7 +161,7 @@ export const signIn = asyncHandler(async (req, res) => {
         throw new ApiError(
           429,
           "Too many failed login attempts. Please try again later.",
-          []
+          [],
         );
       }
     }
@@ -402,7 +402,7 @@ export const handleSocialLogin = asyncHandler(async (req, res) => {
     .cookie("access_token", accessToken, options) // set the access token in the cookie
     .redirect(
       // redirect user to the frontend with access and refresh token in case user is not using cookies
-      `${process.env.CLIENT_SSO_REDIRECT_URL}?accessToken=${accessToken}`
+      `${process.env.CLIENT_SSO_REDIRECT_URL}?accessToken=${accessToken}`,
     );
 });
 

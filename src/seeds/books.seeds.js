@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 // Read and parse the JSON file
 const booksData = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "../data/books.json"), "utf-8")
+  fs.readFileSync(path.join(__dirname, "../data/books.json"), "utf-8"),
 );
 
 export const addBooks = async (req, res) => {

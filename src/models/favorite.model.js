@@ -13,7 +13,7 @@ const favoriteSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Favorite = mongoose.model("favorites", favoriteSchema);

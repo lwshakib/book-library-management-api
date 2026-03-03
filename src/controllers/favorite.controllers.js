@@ -32,8 +32,8 @@ export const makeItMyFavorite = asyncHandler(async (req, res) => {
       new ApiResponse(
         201,
         favorite,
-        `Book with ID ${bookId} added to favorites`
-      )
+        `Book with ID ${bookId} added to favorites`,
+      ),
     );
 });
 
@@ -67,7 +67,7 @@ export const getMyFavorites = asyncHandler(async (req, res) => {
       totalPages: Math.ceil(totalFavorites / limit),
       hasNextPage: page * limit < totalFavorites,
       hasPrevPage: page > 1,
-    })
+    }),
   );
 });
 
@@ -98,7 +98,7 @@ export const deleteFavorite = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         undefined,
-        `Book with ID ${bookId} removed from favorites`
-      )
+        `Book with ID ${bookId} removed from favorites`,
+      ),
     );
 });

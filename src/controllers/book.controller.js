@@ -153,8 +153,8 @@ export const getBooks = asyncHandler(async (req, res) => {
       {
         order: order === 1 ? "asc" : "desc",
         fields: req.query.field ? req.query.field.split(",") : [],
-      }
-    )
+      },
+    ),
   );
 });
 
@@ -257,8 +257,8 @@ export const updateBook = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         updatedBook,
-        `Book with ID ${bookId} updated successfully`
-      )
+        `Book with ID ${bookId} updated successfully`,
+      ),
     );
 });
 
@@ -278,8 +278,8 @@ export const deleteBook = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         undefined,
-        `Book with ID ${bookId} deleted successfully`
-      )
+        `Book with ID ${bookId} deleted successfully`,
+      ),
     );
 });
 
@@ -302,7 +302,7 @@ export const changeBookCover = asyncHandler(async (req, res) => {
   const updatedBook = await Book.findByIdAndUpdate(
     bookId,
     { coverImage },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   );
 
   if (!updatedBook) {
@@ -318,8 +318,8 @@ export const changeBookCover = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         updatedBook,
-        `Cover image for book with ID ${bookId} updated successfully`
-      )
+        `Cover image for book with ID ${bookId} updated successfully`,
+      ),
     );
 });
 
@@ -342,7 +342,7 @@ export const changeBookPdf = asyncHandler(async (req, res) => {
   const updatedBook = await Book.findByIdAndUpdate(
     bookId,
     { pdfUrl },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   );
 
   if (!updatedBook) {
@@ -358,7 +358,7 @@ export const changeBookPdf = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         updatedBook,
-        `PDF file for book with ID ${bookId} updated successfully`
-      )
+        `PDF file for book with ID ${bookId} updated successfully`,
+      ),
     );
 });

@@ -129,7 +129,7 @@ export const welcomeTemplate = (context) => {
                 hour: "2-digit",
                 minute: "2-digit",
                 timeZoneName: "short",
-              }
+              },
             )}</p>
           </div>
 
@@ -156,7 +156,7 @@ export const welcomeTemplate = (context) => {
   const text = `Hello ${
     context.name
   }!\n\nWelcome to OpenLibrary! We're thrilled to have you join our community of book lovers and readers.\n\nYour OpenLibrary account has been created and you're ready to start exploring!\n\nAs a new member, you have access to:\n- Browse thousands of books across all genres\n- Create reading lists to organize your favorite books\n- Rate and review books you've read\n- Get personalized recommendations based on your interests\n- Join book discussions and connect with fellow readers\n- Track your reading progress and set reading goals\n\nNext Step: Verify Your Email\nTo unlock all features and ensure account security, please verify your email address. Check your inbox for a verification email with a code that expires in 10 minutes.\n\nAccount created on ${new Date().toLocaleString(
-    "en-US"
+    "en-US",
   )}.\n\nHappy reading and welcome to the community!\nThe OpenLibrary Team`;
 
   return { html, text };

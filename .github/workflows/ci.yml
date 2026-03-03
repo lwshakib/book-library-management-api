@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check Formatting
+        run: bun run format:check
+
+      - name: Run Tests
+        run: bun run test
+        env:
+          PORT: 7000
+          BACKEND_URL: "http://localhost:7000"
+          CLIENT_SSO_REDIRECT_URL: "http://localhost:7000"
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_CALLBACK_URL: "http://localhost:7000/auth/google/callback"
+          GITHUB_CLIENT_ID: ${{ secrets.GITHUB_CLIENT_ID }}
+          GITHUB_CLIENT_SECRET: ${{ secrets.GITHUB_CLIENT_SECRET }}
+          GITHUB_CALLBACK_URL: "http://localhost:7000/auth/github/callback"
+          EXPRESS_SESSION_SECRET: ${{ secrets.EXPRESS_SESSION_SECRET }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          DB_NAME: "book-library"
+          NODE_ENV: test
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          ACCESS_TOKEN_EXPIRATION: "1d"
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_PASS: ${{ secrets.GMAIL_PASS }}
+          MAILHOG_SMTP_HOST: "localhost"
+          MAILHOG_SMTP_PORT: "1025"

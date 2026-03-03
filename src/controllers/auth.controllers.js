@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { SendMailEnum } from "../constants.js";
 import { AuthenticatedUserModel } from "../models/auth/authenticated-user.model.js";
 import { LoginHistoryModel } from "../models/auth/login-history.model.js";
@@ -411,13 +412,17 @@ export const verifyToken = asyncHandler(async (req, res) => {
   if (!token) {
     throw new ApiError(400, "Token is required");
   }
-  const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  if (!decoded) {
-    throw new ApiError(401, "Invalid token");
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    if (!decoded) {
+      throw new ApiError(401, "Invalid token");
+    }
+    res.status(200).json({
+      success: true,
+      message: "Token verified successfully",
+      decoded,
+    });
+  } catch (error) {
+    throw new ApiError(401, error?.message || "Invalid token");
   }
-  res.status(200).json({
-    success: true,
-    message: "Token verified successfully",
-    decoded,
-  });
 });

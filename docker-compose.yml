@@ -1,4 +1,26 @@
 services:
+  # ── API Server ─────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: book_library_api
+    restart: unless-stopped
+    ports:
+      - "${PORT:-7000}:${PORT:-7000}"
+    env_file:
+      - .env
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017
+      - MAILHOG_SMTP_HOST=mailhog
+      - MAILHOG_SMTP_PORT=1025
+    depends_on:
+      mongodb:
+        condition: service_started
+    networks:
+      - book_library_network
+
+  # ── MongoDB ────────────────────────────────────
   mongodb:
     image: mongo:latest
     container_name: mongo_container
@@ -9,16 +31,18 @@ services:
     networks:
       - book_library_network
 
+  # ── MailHog (dev email testing) ────────────────
   mailhog:
     image: mailhog/mailhog:latest
     container_name: mailhog_container
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI
     networks:
       - book_library_network
 
 volumes:
   mongo_data:
+
 networks:
   book_library_network:

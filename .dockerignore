@@ -1,2 +1,45 @@
-/.vscode
-/node_modules
+# Version control
+.git
+.gitignore
+
+# Dependencies
+node_modules
+
+# IDE / Editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# Test files
+__tests__
+bunfig.toml
+*.test.js
+
+# Dev tooling configs
+.prettierc.yaml
+.prettierignore
+nodemon.json
+
+# Documentation
+README.md
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+LICENSE
+
+# Environment (will be injected at runtime)
+.env
+.env.*
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Logs
+logs
+*.log

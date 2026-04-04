@@ -8,7 +8,8 @@
     "dev": "nodemon src/index.js",
     "build": "echo 'No build step required for server'",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "seed": "node src/seeds/admin.seed.js"
   },
   "repository": {
     "type": "git",

@@ -197,7 +197,7 @@
           Continue with GitHub
         </a>
         <div class="or">or</div>
-        <form method="POST" action="/auth/sign-up">
+        <form id="signUpForm" method="POST" action="/auth/sign-up">
           <div>
             <label for="name">Name</label>
             <input
@@ -376,6 +376,61 @@
           setIcon(btn, input);
         });
       });
+
+      var form = document.getElementById("signUpForm");
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var btn = form.querySelector('button[type="submit"]');
+          var originalText = btn.textContent;
+          btn.textContent = "Creating account...";
+          btn.disabled = true;
+
+          var name = document.getElementById("name").value;
+          var email = document.getElementById("email").value;
+          var password = document.getElementById("password").value;
+          var confirmPassword = document.getElementById("confirmPassword").value;
+
+          if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            btn.textContent = originalText;
+            btn.disabled = false;
+            return;
+          }
+
+          fetch("/auth/sign-up", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: name,
+              email: email,
+              password: password,
+              confirmPassword: confirmPassword,
+            }),
+          })
+            .then(function (res) {
+              return res.json();
+            })
+            .then(function (data) {
+              if (data.success) {
+                alert("Account created successfully. Please check your email to verify.");
+                window.location.href = "/sign-in";
+              } else {
+                alert(data.message || data.error || "Sign up failed");
+                btn.textContent = originalText;
+                btn.disabled = false;
+              }
+            })
+            .catch(function (err) {
+              console.error(err);
+              alert("An error occurred. Please try again.");
+              btn.textContent = originalText;
+              btn.disabled = false;
+            });
+        });
+      }
     })();
   </script>
 </html>

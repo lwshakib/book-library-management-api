@@ -197,7 +197,7 @@
           Continue with GitHub
         </a>
         <div class="or">or</div>
-        <form method="POST" action="/auth/sign-in">
+        <form id="signInForm" method="POST" action="/auth/sign-in">
           <div>
             <label for="email">Email</label>
             <input
@@ -303,6 +303,46 @@
           setIcon(btn, input);
         });
       });
+
+      var form = document.getElementById("signInForm");
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var btn = form.querySelector('button[type="submit"]');
+          var originalText = btn.textContent;
+          btn.textContent = "Signing in...";
+          btn.disabled = true;
+
+          var email = document.getElementById("email").value;
+          var password = document.getElementById("password").value;
+
+          fetch("/auth/sign-in", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: email, password: password }),
+          })
+            .then(function (res) {
+              return res.json();
+            })
+            .then(function (data) {
+              if (data.success && data.accessToken) {
+                window.location.href = "/?accessToken=" + data.accessToken;
+              } else {
+                alert(data.message || data.error || "Sign in failed");
+                btn.textContent = originalText;
+                btn.disabled = false;
+              }
+            })
+            .catch(function (err) {
+              console.error(err);
+              alert("An error occurred. Please try again.");
+              btn.textContent = originalText;
+              btn.disabled = false;
+            });
+        });
+      }
     })();
   </script>
 </html>

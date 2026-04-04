@@ -36,9 +36,7 @@
             <p class="muted" itemprop="email"><%= user?.email %></p>
             <div class="badges">
               <span class="badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M12 1l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-8.5L2 8h7z"></path>
-                </svg>
+                <i data-lucide="star" style="width: 14px; height: 14px;"></i>
                 <%= (user?.role || "USER").toString().toUpperCase() %>
               </span>
               <span class="badge badge--muted">

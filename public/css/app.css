@@ -129,8 +129,10 @@ body {
 }
 .theme-toggle {
   border: 1px solid transparent;
-  border-radius: 14px;
-  padding: 8px 12px;
+  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
   background: var(--surface-muted);
   color: var(--muted);
   display: inline-flex;

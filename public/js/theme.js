@@ -32,4 +32,8 @@
     applyTheme(nextTheme);
     localStorage.setItem(storageKey, nextTheme);
   });
+
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 })();

@@ -1,9 +1,8 @@
+<script src="https://unpkg.com/lucide@latest"></script>
 <nav class="topnav" role="banner">
   <a class="brand" href="/">
     <span class="brand-icon" aria-hidden="true">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" focusable="false" aria-hidden="true">
-        <path d="M6 2h9a3 3 0 0 1 3 3v13.5a.5.5 0 0 1-.8.4c-1.02-.77-2.28-1.4-3.7-1.4H6a2 2 0 0 0-2 2V5a3 3 0 0 1 2-3zm0 14h7.5c1.6 0 3 .6 4 1.33V5a1 1 0 0 0-1-1H6c-.35 0-.68.06-1 .17V16c.32-.1.65-.16 1-.16z"></path>
-      </svg>
+      <i data-lucide="library"></i>
     </span>
     Book Library
   </a>
@@ -13,18 +12,13 @@
     <a href="/profile" class="nav-link <%= activePage === 'profile' ? 'active' : '' %>" <%= activePage === 'profile' ? 'aria-current="page"' : '' %>>Profile</a>
     <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark theme">
       <span class="theme-toggle__icon">
-        <span data-icon="moon" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" focusable="false" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
+        <span data-icon="moon">
+          <i data-lucide="moon"></i>
         </span>
-        <span data-icon="sun" hidden aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" focusable="false" aria-hidden="true">
-            <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zM1 13h3v-2H1v2zm10 10h2v-3h-2v3zm9-10v2h3v-2h-3zm-1.34 6.95l1.41 1.41 1.8-1.79-1.41-1.41-1.8 1.79zM4.22 18.36l-1.8 1.79 1.41 1.41 1.79-1.8-1.4-1.4zM12 4a8 8 0 1 0 .001 16.001A8 8 0 0 0 12 4zm0-4h2v3h-2V0zm7.07 4.93l1.8-1.79-1.41-1.41-1.79 1.8 1.4 1.4z"></path>
-          </svg>
+        <span data-icon="sun" hidden>
+          <i data-lucide="sun"></i>
         </span>
       </span>
-      <span data-theme-label>Dark</span>
     </button>
   </div>
 </nav>

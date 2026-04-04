@@ -36,17 +36,17 @@
                 <div class="placeholder">Cover coming soon</div>
                 <% } %>
               </div>
-              <div class="book-content">
-                <h2>
-                  <a
-                    href="/book/<%= book._id %>"
-                    style="text-decoration: none; color: inherit"
-                    ><%= book.title %></a
-                  >
-                </h2>
-                <div class="book-meta" style="margin-top: -4px;">
-                  <span class="muted">By <%= book.author %></span>
-                </div>
+            <div class="book-content">
+              <h3>
+                <a
+                  href="/book/<%= book._id %>"
+                  style="text-decoration: none; color: inherit"
+                  ><%= book.title %></a
+                >
+              </h3>
+              <div class="book-meta">
+                <span class="muted">By <%= book.author %></span>
+              </div>
                 <div class="book-links" style="margin-top: 12px;">
                   <% if (book.buyHardCopyFrom) { %>
                   <a

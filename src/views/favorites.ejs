@@ -51,10 +51,10 @@
               <h3 itemprop="name">
                 <a href="/book/<%= book._id %>" style="text-decoration: none; color: inherit;"><%= book.title %></a>
               </h3>
-              <div class="book-meta" style="margin-top: -4px;">
+              <div class="book-meta">
                 <span class="muted">By <%= book.author %></span>
               </div>
-              <div class="book-links" style="margin-top: 12px;">
+              <div class="book-links">
                 <% if (book.buyHardCopyFrom) { %>
                 <a href="<%= book.buyHardCopyFrom %>" target="_blank" rel="noopener">Buy</a>
                 <% } else { %>

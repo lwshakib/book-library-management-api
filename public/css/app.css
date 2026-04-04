@@ -35,6 +35,21 @@
     border-color 0.18s ease,
     box-shadow 0.18s ease;
 }
+/* Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ring);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
 body {
   margin: 0;
   font-family:
@@ -250,26 +265,27 @@ header p {
 }
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  gap: 24px;
 }
 .books-grid--compact {
-  grid-template-columns: repeat(auto-fill, minmax(160px, 220px));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  gap: 20px;
 }
 .favorites-grid h2 {
   margin-top: 0;
 }
-/* Force 5 cards per row on wider screens for favorites page */
-@media (min-width: 1100px) {
+/* Force 5 columns on wider screens but maintain card size */
+@media (min-width: 1400px) {
   .favorites-page .books-grid--compact {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 }
 .book-card {
+  max-width: 320px;
   background: var(--surface-strong);
   border-radius: 12px;
-  border: 1px solid var(--ring);
+  border: none;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -308,25 +324,25 @@ header p {
   text-align: center;
 }
 .book-content {
-  padding: 16px 18px 18px;
+  padding: 12px 14px 14px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   flex: 1;
 }
 .book-card--compact .book-content {
-  padding: 12px;
-  gap: 8px;
+  padding: 10px;
+  gap: 6px;
 }
-.book-content h2 {
-  margin: 0;
-  font-size: 16px;
+.book-content h3 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
   line-height: 1.35;
   color: var(--text);
 }
 .book-card--compact h2,
 .book-card--compact h3 {
-  font-size: 15px;
+  font-size: 13px;
 }
 .book-meta {
   display: flex;
@@ -334,6 +350,7 @@ header p {
   gap: 6px 12px;
   font-size: 12px;
   color: var(--muted);
+  margin-bottom: 12px;
 }
 .book-card--compact .book-meta {
   gap: 4px 8px;
@@ -373,16 +390,20 @@ header p {
 }
 .book-links {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 8px;
   margin-top: auto;
 }
 .book-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   font-size: 12px;
   font-weight: 600;
   color: var(--accent);
   text-decoration: none;
-  padding: 6px 12px;
+  padding: 10px 12px;
   border-radius: 10px;
   background: var(--accent-soft);
   transition:

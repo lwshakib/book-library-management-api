@@ -137,13 +137,19 @@ app.get("/", async (req, res, next) => {
     }
 
     const page = Math.max(parseInt(req.query.page || "1", 10), 1);
+    const authorFilter = req.query.author;
     const limit = 10;
     const skip = (page - 1) * limit;
 
-    const totalBooks = await Book.countDocuments();
+    const query = {};
+    if (authorFilter) {
+      query.author = authorFilter;
+    }
+
+    const totalBooks = await Book.countDocuments(query);
     const totalPages = Math.max(Math.ceil(totalBooks / limit), 1);
 
-    const books = await Book.find()
+    const books = await Book.find(query)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -240,8 +246,10 @@ app.get("/", async (req, res, next) => {
         hasPrevPage: page > 1,
         nextPage: page < totalPages ? page + 1 : null,
         prevPage: page > 1 ? page - 1 : null,
+        author: authorFilter,
       },
       popularAuthors,
+      selectedAuthor: authorFilter,
     });
   } catch (error) {
     next(error);

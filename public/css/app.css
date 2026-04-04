@@ -9,9 +9,9 @@
   --muted: #64748b;
   --ring: #e2e8f0;
   --shadow: rgba(0, 0, 0, 0.05);
-  --accent: #2563eb;
-  --accent-soft: rgba(37, 99, 235, 0.1);
-  --accent-strong: rgba(37, 99, 235, 0.2);
+  --accent: #10b981;
+  --accent-soft: rgba(16, 185, 129, 0.1);
+  --accent-strong: rgba(16, 185, 129, 0.2);
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
@@ -23,9 +23,9 @@
   --muted: #94a3b8;
   --ring: #262626;
   --shadow: rgba(0, 0, 0, 0.4);
-  --accent: #60a5fa;
-  --accent-soft: rgba(96, 165, 250, 0.15);
-  --accent-strong: rgba(96, 165, 250, 0.25);
+  --accent: #34d399;
+  --accent-soft: rgba(52, 211, 153, 0.15);
+  --accent-strong: rgba(52, 211, 153, 0.25);
 }
 * {
   box-sizing: border-box;
@@ -105,11 +105,14 @@ body {
   text-decoration: none;
   color: var(--muted);
   font-weight: 600;
-  font-size: 14px;
-  padding: 9px 16px;
+  font-size: 12px;
+  padding: 6px 10px;
   border-radius: 999px;
   background: transparent;
   border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   transition:
     background 0.18s ease,
     color 0.18s ease,
@@ -127,6 +130,12 @@ body {
   color: var(--accent);
   border-color: transparent;
 }
+.nav-link i,
+.nav-link svg {
+  display: none;
+  width: 14px;
+  height: 14px;
+}
 .theme-toggle {
   border: none;
   padding: 0;
@@ -142,11 +151,13 @@ body {
   color: var(--accent);
 }
 .theme-toggle__icon {
-  width: 16px;
-  height: 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+.theme-toggle__icon svg {
+  width: 14px;
+  height: 14px;
 }
 .page {
   max-width: none;
@@ -426,6 +437,9 @@ header p {
   pointer-events: none;
 }
 @media (max-width: 640px) {
+  .topnav {
+    padding: 12px 16px;
+  }
   .page {
     padding: 0 16px 48px;
   }
@@ -434,7 +448,29 @@ header p {
     gap: 20px;
   }
   .sidebar {
-    order: -1;
+    display: none;
+  }
+  .nav-link i,
+  .nav-link svg {
+    display: block;
+  }
+  .nav-link-text {
+    display: none;
+  }
+  .nav-link {
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    background: var(--surface-muted);
+  }
+  .nav-link.active {
+    background: var(--accent-soft);
+    border-color: var(--accent-strong);
+  }
+  .brand {
+    font-size: 0;
+    gap: 0;
   }
   header h1 {
     font-size: 26px;

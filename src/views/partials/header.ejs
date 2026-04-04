@@ -7,9 +7,18 @@
     Book Library
   </a>
   <div class="links">
-    <a href="/" class="nav-link <%= activePage === 'home' ? 'active' : '' %>" <%= activePage === 'home' ? 'aria-current="page"' : '' %>>Home</a>
-    <a href="/favorite-books" class="nav-link <%= activePage === 'favorites' ? 'active' : '' %>" <%= activePage === 'favorites' ? 'aria-current="page"' : '' %>>Favorites</a>
-    <a href="/profile" class="nav-link <%= activePage === 'profile' ? 'active' : '' %>" <%= activePage === 'profile' ? 'aria-current="page"' : '' %>>Profile</a>
+    <a href="/" class="nav-link <%= activePage === 'home' ? 'active' : '' %>" <%= activePage === 'home' ? 'aria-current="page"' : '' %>>
+      <i data-lucide="home"></i>
+      <span class="nav-link-text">Home</span>
+    </a>
+    <a href="/favorite-books" class="nav-link <%= activePage === 'favorites' ? 'active' : '' %>" <%= activePage === 'favorites' ? 'aria-current="page"' : '' %>>
+      <i data-lucide="heart"></i>
+      <span class="nav-link-text">Favorites</span>
+    </a>
+    <a href="/profile" class="nav-link <%= activePage === 'profile' ? 'active' : '' %>" <%= activePage === 'profile' ? 'aria-current="page"' : '' %>>
+      <i data-lucide="user"></i>
+      <span class="nav-link-text">Profile</span>
+    </a>
     <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark theme">
       <span class="theme-toggle__icon">
         <span data-icon="moon">

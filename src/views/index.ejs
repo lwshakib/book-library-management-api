@@ -44,46 +44,21 @@
                     ><%= book.title %></a
                   >
                 </h2>
-                <div class="book-meta">
-                  <span>By <strong><%= book.author %></strong></span>
-                  <span>Published <%= book.publishedLabel %></span>
-                  <span>Genre: <%= book.genre || "General" %></span>
+                <div class="book-meta" style="margin-top: -4px;">
+                  <span class="muted">By <%= book.author %></span>
                 </div>
-                <p class="book-description"><%= book.description %></p>
-                <div class="book-footer">
-                  <span class="rating-badge">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      focusable="false"
-                      aria-hidden="true"
-                      style="margin-right: 6px"
-                    >
-                      <path
-                        d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z"
-                      />
-                    </svg>
-                    <%= book.averageRating.toFixed(1) %>/5
-                  </span>
-                  <span
-                    ><%= book.reviewCount %> review<%= book.reviewCount === 1 ?
-                    "" : "s" %></span
-                  >
-                </div>
-                <div class="book-links">
-                  <% if (book.pdfUrl) { %>
-                  <a href="<%= book.pdfUrl %>" target="_blank" rel="noopener">
-                    Read PDF
-                  </a>
-                  <% } %> <% if (book.buyHardCopyFrom) { %>
+                <div class="book-links" style="margin-top: 12px;">
+                  <% if (book.buyHardCopyFrom) { %>
                   <a
                     href="<%= book.buyHardCopyFrom %>"
                     target="_blank"
                     rel="noopener"
                   >
-                    Buy Hard Copy
+                    Buy
+                  </a>
+                  <% } else { %>
+                  <a href="/book/<%= book._id %>">
+                    View Details
                   </a>
                   <% } %>
                 </div>

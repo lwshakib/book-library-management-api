@@ -1,31 +1,31 @@
 /* Book Library App CSS */
 :root {
   color-scheme: light;
-  --page: #f7f9fc;
+  --page: #ffffff;
   --surface: rgba(255, 255, 255, 0.94);
-  --surface-strong: #ffffff;
-  --surface-muted: rgba(226, 232, 240, 0.45);
+  --surface-strong: #fafafa;
+  --surface-muted: #f4f4f5;
   --text: #0f172a;
   --muted: #64748b;
-  --ring: rgba(148, 163, 184, 0.2);
-  --shadow: rgba(15, 23, 42, 0.12);
+  --ring: #e2e8f0;
+  --shadow: rgba(0, 0, 0, 0.05);
   --accent: #2563eb;
-  --accent-soft: rgba(37, 99, 235, 0.14);
-  --accent-strong: rgba(37, 99, 235, 0.24);
+  --accent-soft: rgba(37, 99, 235, 0.1);
+  --accent-strong: rgba(37, 99, 235, 0.2);
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --page: #0f1729;
-  --surface: rgba(15, 23, 42, 0.82);
-  --surface-strong: #0b1220;
-  --surface-muted: rgba(30, 41, 59, 0.58);
+  --page: #000000;
+  --surface: rgba(0, 0, 0, 0.82);
+  --surface-strong: #0a0a0a;
+  --surface-muted: #171717;
   --text: #e2e8f0;
   --muted: #94a3b8;
-  --ring: rgba(148, 163, 184, 0.12);
-  --shadow: rgba(2, 6, 23, 0.4);
+  --ring: #262626;
+  --shadow: rgba(0, 0, 0, 0.4);
   --accent: #60a5fa;
-  --accent-soft: rgba(96, 165, 250, 0.18);
-  --accent-strong: rgba(96, 165, 250, 0.28);
+  --accent-soft: rgba(96, 165, 250, 0.15);
+  --accent-strong: rgba(96, 165, 250, 0.25);
 }
 * {
   box-sizing: border-box;
@@ -243,7 +243,7 @@ header p {
 }
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 16px;
 }
 .books-grid--compact {
@@ -258,22 +258,18 @@ header p {
 }
 .book-card {
   background: var(--surface-strong);
-  border-radius: 16px;
+  border-radius: 12px;
   border: 1px solid var(--ring);
-  box-shadow: 0 18px 32px -28px var(--shadow);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
+  transition: transform 0.18s ease;
 }
 .book-card--compact {
-  border-radius: 12px;
+  border-radius: 10px;
 }
 .book-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 32px 40px -32px var(--shadow);
+  transform: translateY(-2px);
 }
 .book-cover {
   background: #1e293b;
@@ -314,7 +310,7 @@ header p {
 }
 .book-content h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.35;
   color: var(--text);
 }

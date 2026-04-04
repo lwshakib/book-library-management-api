@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { BookGenreEnum } from "../constants.js";
 
 const bookSchema = new mongoose.Schema(
   {
@@ -25,19 +26,7 @@ const bookSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      enum: [
-        "Fiction",
-        "Non-Fiction",
-        "Science Fiction",
-        "Fantasy",
-        "Biography",
-        "History",
-        "Mystery",
-        "Romance",
-        "Horror",
-        "Programming",
-        "Other",
-      ],
+      enum: Object.values(BookGenreEnum),
     },
     summary: {
       type: String,

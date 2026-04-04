@@ -44,6 +44,13 @@ export const BookGenreEnum = {
   ROMANCE: "Romance",
   HORROR: "Horror",
   PROGRAMMING: "Programming",
+  TECHNOLOGY: "Technology",
+  MANGA: "Manga",
+  PHYSICS: "Physics",
+  CHEMISTRY: "Chemistry",
+  STATISTICS: "Statistics",
+  AI: "AI",
+  SYSTEM_DESIGN: "System Design",
   OTHER: "Other",
 };
 

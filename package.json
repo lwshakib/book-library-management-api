@@ -9,7 +9,8 @@
     "build": "echo 'No build step required for server'",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "seed": "node src/seeds/admin.seed.js"
+    "seed": "node src/seeds/admin.seed.js",
+    "mongodb:teardown": "node src/scripts/mongodb-teardown.js"
   },
   "repository": {
     "type": "git",

@@ -256,6 +256,9 @@ header p {
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
 }
+.favorites-grid h2 {
+  margin-top: 0;
+}
 /* Force 5 cards per row on wider screens for favorites page */
 @media (min-width: 1100px) {
   .favorites-page .books-grid--compact {
@@ -483,20 +486,16 @@ header p {
   }
 }
 
-/* Profile page */
-.page--compact {
-  padding-bottom: 40px;
+/* Profile page v2 minimal */
+.profile-layout-v2 {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 0;
 }
-.profile-card {
-  background: var(--surface-strong);
-  border: 1px solid var(--ring);
-  border-radius: 18px;
-  box-shadow: 0 24px 40px -30px var(--shadow);
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+.profile-section {
+  padding-bottom: 8px;
 }
+
 .profile {
   display: flex;
   align-items: center;
@@ -551,26 +550,6 @@ header p {
   background: var(--surface-muted);
   color: var(--muted);
 }
-.profile-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-.tile {
-  background: var(--surface-strong);
-  border-radius: 14px;
-  border: 1px solid var(--ring);
-  padding: 18px;
-  box-shadow: 0 18px 32px -28px var(--shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.tile h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 700;
-}
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -597,6 +576,28 @@ header p {
 .btn:hover {
   background: var(--accent-strong);
   transform: translateY(-1px);
+}
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+.btn-primary:hover {
+  background: var(--accent-strong);
+}
+
+/* Legacy Profile page classes - can be kept for compatibility or removed if fully replaced */
+.page--compact {
+  padding-bottom: 40px;
+}
+.profile-card {
+  background: var(--surface-strong);
+  border: 1px solid var(--ring);
+  border-radius: 18px;
+  box-shadow: 0 24px 40px -30px var(--shadow);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 .muted {
   color: var(--muted);

@@ -28,9 +28,9 @@
       </header>
 
       <% if (books && books.length > 0) { %>
-      <section aria-labelledby="saved-books" class="section-card section-card--stack">
-        <h2 id="saved-books" class="section-title">Saved for later</h2>
-        <div class="books-grid books-grid--compact">
+      <div class="favorites-grid">
+        <h2 id="saved-books" class="section-title" style="margin-bottom: 24px;">Saved for later</h2>
+        <div class="books-grid">
           <% books.forEach(function (book) { %>
           <article class="book-card book-card--compact" itemscope itemtype="https://schema.org/Book">
             <div class="book-cover">
@@ -49,18 +49,23 @@
             </div>
             <div class="book-content">
               <h3 itemprop="name">
-                <a href="/book/<%= book._id %>"><%= book.title %></a>
+                <a href="/book/<%= book._id %>" style="text-decoration: none; color: inherit;"><%= book.title %></a>
               </h3>
-              <p class="book-meta">
-                <span>By <strong itemprop="author"><%= book.author %></strong></span>
-                <span>Published <time itemprop="datePublished"><%= book.publishedLabel %></time></span>
-                <span>Genre: <span itemprop="genre"><%= book.genre || "General" %></span></span>
-              </p>
+              <div class="book-meta" style="margin-top: -4px;">
+                <span class="muted">By <%= book.author %></span>
+              </div>
+              <div class="book-links" style="margin-top: 12px;">
+                <% if (book.buyHardCopyFrom) { %>
+                <a href="<%= book.buyHardCopyFrom %>" target="_blank" rel="noopener">Buy</a>
+                <% } else { %>
+                <a href="/book/<%= book._id %>">View</a>
+                <% } %>
+              </div>
             </div>
           </article>
           <% }); %>
         </div>
-      </section>
+      </div>
 
       <% if (pagination && pagination.totalPages > 1) { %>
       <nav class="pagination" role="navigation" aria-label="Favorites pagination">

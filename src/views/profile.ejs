@@ -22,73 +22,74 @@
     <%- include('partials/header', { activePage: 'profile' }) %>
 
     <main id="main-content" class="page page--compact profile-page" role="main">
-      <article class="profile-card" itemscope itemtype="https://schema.org/Person">
-        <header class="profile">
-          <div class="avatar" aria-hidden="true">
+      <div class="profile-layout-v2">
+        <header class="profile" style="margin-bottom: 48px;">
+          <div class="avatar" aria-hidden="true" style="width: 80px; height: 80px;">
             <% if (profile && profile.avatar) { %>
             <img src="<%= profile.avatar %>" alt="Avatar for <%= user?.username || profile?.fullName || 'User' %>" />
             <% } else { %>
-            <span class="avatar__initial"><%= (user?.username || user?.email || "U").substring(0, 1).toUpperCase() %></span>
+            <span class="avatar__initial" style="font-size: 28px;"><%= (user?.username || user?.email || "U").substring(0, 1).toUpperCase() %></span>
             <% } %>
           </div>
           <div class="meta">
-            <h1 itemprop="name"><%= profile?.fullName || user?.username || "Reader" %></h1>
-            <p class="muted" itemprop="email"><%= user?.email %></p>
+            <h1 itemprop="name" style="font-size: 32px; margin-bottom: 8px;"><%= profile?.fullName || user?.username || "Reader" %></h1>
+            <p class="muted" itemprop="email" style="font-size: 16px; margin-bottom: 12px;"><%= user?.email %></p>
             <div class="badges">
               <span class="badge">
                 <i data-lucide="star" style="width: 14px; height: 14px;"></i>
                 <%= (user?.role || "USER").toString().toUpperCase() %>
               </span>
               <span class="badge badge--muted">
-                Member since
-                <time datetime="<%= user?.createdAt %>">
-                  <%= (user?.createdAt ? new Date(user.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) : "Recently") %>
-                </time>
+                Member since <%= (user?.createdAt ? new Date(user.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short" }) : "Recently") %>
               </span>
             </div>
           </div>
         </header>
 
-        <section class="profile-grid" aria-label="Account highlights">
-          <article class="tile">
-            <h3>Account</h3>
-            <p class="muted">Role: <strong><%= user?.role || "USER" %></strong></p>
-            <p class="muted">Username: <%= user?.username || "—" %></p>
-          </article>
-          <article class="tile">
-            <h3>Profile</h3>
-            <p class="muted">Full name: <%= profile?.fullName || "—" %></p>
-            <p class="muted">Bio: <%= profile?.bio || "Set a short bio to let others know about your reading taste." %></p>
-            <div class="actions">
-              <a class="btn" href="/profile">Edit Profile</a>
+        <section class="profile-sections-minimal" style="display: flex; flex-direction: column; gap: 48px;">
+          <div class="profile-section">
+            <h2 class="section-title" style="margin-bottom: 16px; font-size: 20px;">Account Information</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
+              <div>
+                <p class="muted" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Username</p>
+                <p><%= user?.username || "—" %></p>
+              </div>
+              <div>
+                <p class="muted" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Role</p>
+                <p><%= user?.role || "USER" %></p>
+              </div>
             </div>
-          </article>
-          <article class="tile">
-            <h3>Library</h3>
-            <p class="muted">
-              Explore the latest arrivals or revisit your saved favorites to keep reading momentum.
-            </p>
+          </div>
+
+          <div class="profile-section">
+            <h2 class="section-title" style="margin-bottom: 16px; font-size: 20px;">Personal Profile</h2>
+            <div style="max-width: 600px;">
+              <p class="muted" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Bio</p>
+              <p style="line-height: 1.6;"><%= profile?.bio || "Set a short bio to let others know about your reading taste." %></p>
+              <div class="actions" style="margin-top: 16px;">
+                <a class="btn" href="/profile">Edit Profile</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-section">
+            <h2 class="section-title" style="margin-bottom: 16px; font-size: 20px;">Library & Preferences</h2>
+            <p class="muted" style="margin-bottom: 16px;">Quickly access your saved collections or browse for new arrivals.</p>
             <div class="actions">
               <a class="btn" href="/">Browse Books</a>
               <a class="btn" href="/favorite-books">View Favorites</a>
             </div>
-          </article>
-        </section>
+          </div>
 
-        <section class="profile-grid" aria-label="Security and preferences">
-          <article class="tile">
-            <h3>Security</h3>
-            <p class="muted">Keep your account secure by using a strong password and enabling 2FA when available.</p>
+          <div class="profile-section">
+            <h2 class="section-title" style="margin-bottom: 16px; font-size: 20px;">Security</h2>
+            <p class="muted" style="margin-bottom: 16px;">Manage your session and account security settings.</p>
             <div class="actions">
               <a class="btn" href="/sign-out">Sign out</a>
             </div>
-          </article>
-          <article class="tile">
-            <h3>Preferences</h3>
-            <p class="muted">Switch appearance with the theme toggle in the header. Your choice is saved on this device.</p>
-          </article>
+          </div>
         </section>
-      </article>
+      </div>
     </main>
   </body>
 </html>

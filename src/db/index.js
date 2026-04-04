@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 import { DB_NAME } from "../constants.js";
 import logger from "../logger/winston.logger.js";
-
+import { MONGODB_URI } from "../envs.js";
 /** @type {typeof mongoose | undefined} */
 export let dbInstance = undefined;
 
 const connectDB = async () => {
   try {
     const connectionInstance = await mongoose.connect(
-      `${process.env.MONGODB_URI}/${DB_NAME}`,
+      `${MONGODB_URI}/${DB_NAME}`,
     );
     dbInstance = connectionInstance;
     logger.info(

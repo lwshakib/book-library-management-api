@@ -1,7 +1,12 @@
-import { config } from "dotenv";
 import nodemailer from "nodemailer";
 import { SendMailEnum } from "../constants.js";
-
+import {
+  GMAIL_PASS,
+  GMAIL_USER,
+  MAILHOG_SMTP_HOST,
+  MAILHOG_SMTP_PORT,
+  NODE_ENV,
+} from "../envs.js";
 // Import email templates
 import {
   resetPasswordTemplate,
@@ -12,15 +17,13 @@ import {
   welcomeTemplate,
 } from "./templates/index.js";
 
-config();
-
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = NODE_ENV === "development";
 
 const transporter = nodemailer.createTransport(
   isDevelopment
     ? {
-        host: process.env.MAILHOG_SMTP_HOST || "localhost",
-        port: Number(process.env.MAILHOG_SMTP_PORT) || 1025,
+        host: MAILHOG_SMTP_HOST || "localhost",
+        port: Number(MAILHOG_SMTP_PORT) || 1025,
         secure: false,
         tls: {
           rejectUnauthorized: false,
@@ -29,8 +32,8 @@ const transporter = nodemailer.createTransport(
     : {
         service: "gmail",
         auth: {
-          user: process.env.GMAIL_USER,
-          pass: process.env.GMAIL_PASS,
+          user: GMAIL_USER,
+          pass: GMAIL_PASS,
         },
       },
 );
@@ -77,7 +80,7 @@ export const sendEmail = async (purpose, context) => {
 
     const mailOptions = {
       from: `OpenLibrary <${
-        process.env.GMAIL_USER || "noreply@openlibrary.com"
+        GMAIL_USER || "noreply@openlibrary.com"
       }>`,
       to: context.to,
       subject,

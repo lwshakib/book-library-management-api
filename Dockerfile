@@ -1,7 +1,11 @@
 # ──────────────────────────────────────────────
 #  Stage 1 – Install dependencies
 # ──────────────────────────────────────────────
-FROM oven/bun:alpine AS deps
+FROM ubuntu:22.04 AS deps
+
+RUN apt-get update && apt-get install -y curl unzip && rm -rf /var/lib/apt/lists/*
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:${PATH}"
 
 WORKDIR /app
 
@@ -14,12 +18,17 @@ RUN bun install --frozen-lockfile --production
 # ──────────────────────────────────────────────
 #  Stage 2 – Production image
 # ──────────────────────────────────────────────
-FROM node:22-alpine AS runner
+FROM ubuntu:22.04 AS runner
+
+RUN apt-get update && apt-get install -y curl wget && \
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Create a non-root user for security
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN groupadd -r appgroup && useradd -r -g appgroup appuser
 
 # Copy production node_modules from deps stage
 COPY --from=deps /app/node_modules ./node_modules

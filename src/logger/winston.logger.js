@@ -1,4 +1,5 @@
 import winston from "winston";
+import { NODE_ENV } from "../envs.js";
 // Define your severity levels.
 const levels = {
   error: 0,
@@ -13,7 +14,7 @@ const levels = {
 // if the server was run in development mode; otherwise,
 // if it was run in production, show only warn and error messages.
 const level = () => {
-  const env = process.env.NODE_ENV || "development";
+  const env = NODE_ENV || "development";
   const isDevelopment = env === "development";
   return isDevelopment ? "debug" : "warn";
 };

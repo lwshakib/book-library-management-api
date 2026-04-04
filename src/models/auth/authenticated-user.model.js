@@ -2,8 +2,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { UserModel } from "./user.model.js";
-import { SendMailEnum } from "../../constants.js";
+import { SendMailEnum, ACCESS_TOKEN_EXPIRATION } from "../../constants.js";
 import { sendEmail } from "../../utils/mail.js";
+import { ACCESS_TOKEN_SECRET } from "../../envs.js";
 
 const authenticatedUserSchema = new mongoose.Schema(
   {
@@ -62,9 +63,9 @@ authenticatedUserSchema.methods.comparePassword = async function (
 authenticatedUserSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     { id: this._id, email: this.email, name: this.name, role: this.role },
-    process.env.ACCESS_TOKEN_SECRET,
+    ACCESS_TOKEN_SECRET,
     {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
+      expiresIn: ACCESS_TOKEN_EXPIRATION,
     },
   );
 };

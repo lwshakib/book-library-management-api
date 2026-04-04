@@ -1,6 +1,5 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import "dotenv/config";
 import express from "express";
 import { ipKeyGenerator, rateLimit } from "express-rate-limit";
 import session from "express-session";
@@ -24,7 +23,13 @@ import { Review } from "./models/review.model.js";
 import { routes } from "./routes/index.js";
 import { addBooks } from "./seeds/books.seeds.js";
 import { ApiError } from "./utils/ApiError.js";
-
+import {
+  NODE_ENV,
+  CLIENT_SSO_REDIRECT_URL,
+  ACCESS_TOKEN_SECRET,
+  BACKEND_URL,
+  EXPRESS_SESSION_SECRET,
+} from "./envs.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -32,7 +37,7 @@ const file = fs.readFileSync(path.resolve(__dirname, "./swagger.yaml"), "utf8");
 const swaggerDocument = YAML.parse(
   file?.replace(
     "- url: ${{server}}",
-    `- url: ${process.env.BACKEND_URL || "http://localhost:7000"}`,
+    `- url: ${BACKEND_URL || "http://localhost:7000"}`,
   ),
 );
 
@@ -49,7 +54,7 @@ app.use(express.static("public")); // configure static file to save images local
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.CLIENT_SSO_REDIRECT_URL || "*",
+    origin: CLIENT_SSO_REDIRECT_URL || "*",
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // Allow cookies to be sent with requests
@@ -87,7 +92,7 @@ app.use(limiter);
 // required for passport
 app.use(
   session({
-    secret: process.env.EXPRESS_SESSION_SECRET,
+    secret: EXPRESS_SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
   }),
@@ -108,7 +113,7 @@ app.get("/", async (req, res, next) => {
     if (accessToken) {
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: NODE_ENV === "production",
         sameSite: "lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
         path: "/",
@@ -123,7 +128,7 @@ app.get("/", async (req, res, next) => {
     // Validate JWT (handle expired/invalid token)
     try {
       const token = req.cookies.accessToken;
-      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      jwt.verify(token, ACCESS_TOKEN_SECRET);
     } catch (err) {
       res.clearCookie("accessToken", { path: "/" });
       return res.redirect("/sign-in");

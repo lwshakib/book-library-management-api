@@ -46,3 +46,5 @@ export const BookGenreEnum = {
   PROGRAMMING: "Programming",
   OTHER: "Other",
 };
+
+export const ACCESS_TOKEN_EXPIRATION = "1d";

@@ -13,7 +13,7 @@ import {
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendEmail } from "../utils/mail.js";
-
+import { ACCESS_TOKEN_SECRET, CLIENT_SSO_REDIRECT_URL, NODE_ENV } from "../envs.js";
 // Handles user signup: validates input, checks for existing user, creates authentication and profile records, sends verification email, and returns the created user profile.
 export const signUp = asyncHandler(async (req, res) => {
   // Extract user details from request body
@@ -395,7 +395,7 @@ export const handleSocialLogin = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: NODE_ENV === "production",
   };
 
   return res
@@ -403,7 +403,7 @@ export const handleSocialLogin = asyncHandler(async (req, res) => {
     .cookie("access_token", accessToken, options) // set the access token in the cookie
     .redirect(
       // redirect user to the frontend with access and refresh token in case user is not using cookies
-      `${process.env.CLIENT_SSO_REDIRECT_URL}?accessToken=${accessToken}`,
+      `${CLIENT_SSO_REDIRECT_URL}?accessToken=${accessToken}`,
     );
 });
 
@@ -413,7 +413,7 @@ export const verifyToken = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Token is required");
   }
   try {
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET);
     if (!decoded) {
       throw new ApiError(401, "Invalid token");
     }

@@ -5,6 +5,14 @@ import { UserRoleEnum } from "../constants.js";
 import { AuthenticatedUserModel } from "../models/auth/authenticated-user.model.js";
 import { UserModel } from "../models/auth/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
+import {
+  GITHUB_CALLBACK_URL,
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET,
+  GOOGLE_CALLBACK_URL,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+} from "../envs.js";
 
 passport.serializeUser((user, next) => {
   next(null, user._id);
@@ -29,9 +37,9 @@ passport.deserializeUser(async (id, next) => {
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      callbackURL: GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, next) => {
       const user = await AuthenticatedUserModel.findOne({
@@ -73,9 +81,9 @@ passport.use(
 passport.use(
   new GitHubStrategy(
     {
-      clientID: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: process.env.GITHUB_CALLBACK_URL,
+      clientID: GITHUB_CLIENT_ID,
+      clientSecret: GITHUB_CLIENT_SECRET,
+      callbackURL: GITHUB_CALLBACK_URL,
     },
     async (_accessToken, _refreshToken, profile, next) => {
       if (!profile._json.email) {

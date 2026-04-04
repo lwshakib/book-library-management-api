@@ -3,6 +3,7 @@ import { AuthenticatedUserModel } from "../models/auth/authenticated-user.model.
 import { UserModel } from "../models/auth/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { ACCESS_TOKEN_SECRET } from "../envs.js";
 
 export const verifyJWT = asyncHandler(async (req, res, next) => {
   const token =
@@ -14,7 +15,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const decodedToken = jwt.verify(token, ACCESS_TOKEN_SECRET);
     const user = await AuthenticatedUserModel.findById(decodedToken?.id).select(
       "-password -__v -createdAt -updatedAt",
     );

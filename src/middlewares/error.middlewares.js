@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import logger from "../logger/winston.logger.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-
+import { NODE_ENV } from "../envs.js";
 /**
  *
  * @param {Error | ApiError} err
@@ -35,7 +35,7 @@ const errorHandler = (err, req, res, next) => {
   const response = {
     ...error,
     message: error.message,
-    ...(process.env.NODE_ENV === "development" ? { stack: error.stack } : {}), // Error stack traces should be visible in development for debugging
+    ...(NODE_ENV === "development" ? { stack: error.stack } : {}), // Error stack traces should be visible in development for debugging
   };
 
   logger.error(`${error.message}`);

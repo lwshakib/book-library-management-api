@@ -1,0 +1,20 @@
+import "dotenv/config";
+
+export const NODE_ENV = process.env.NODE_ENV;
+export const MAILHOG_SMTP_HOST = process.env.MAILHOG_SMTP_HOST;
+export const MAILHOG_SMTP_PORT = process.env.MAILHOG_SMTP_PORT;
+export const GMAIL_USER = process.env.GMAIL_USER;
+export const GMAIL_PASS = process.env.GMAIL_PASS;
+export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+export const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+export const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
+export const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+export const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+export const GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL;
+export const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+export const PORT = process.env.PORT;
+export const NODE_VERSION = process.env.NODE_VERSION;
+export const MONGODB_URI = process.env.MONGODB_URI;
+export const CLIENT_SSO_REDIRECT_URL = process.env.CLIENT_SSO_REDIRECT_URL;
+export const BACKEND_URL = process.env.BACKEND_URL;
+export const EXPRESS_SESSION_SECRET = process.env.EXPRESS_SESSION_SECRET;

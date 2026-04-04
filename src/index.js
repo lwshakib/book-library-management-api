@@ -1,5 +1,5 @@
 import { httpServer } from "./app.js";
-import connectDB from "./db/index.js";
+import { mongoDBService } from "./services/mongodb.services.js";
 import logger from "./logger/winston.logger.js";
 import { PORT, NODE_VERSION } from "./envs.js";
 const port = PORT || 3000;
@@ -17,13 +17,13 @@ const startServer = () => {
 
 if (majorNodeVersion >= 14) {
   try {
-    await connectDB();
+    await mongoDBService.connect();
     startServer();
   } catch (err) {
     logger.error("Mongo db connect error: ", err);
   }
 } else {
-  connectDB()
+  mongoDBService.connect()
     .then(() => {
       startServer();
     })

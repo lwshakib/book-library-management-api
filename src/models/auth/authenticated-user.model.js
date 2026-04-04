@@ -2,9 +2,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { UserModel } from "./user.model.js";
-import { SendMailEnum, ACCESS_TOKEN_EXPIRATION } from "../../constants.js";
-import { sendEmail } from "../../utils/mail.js";
+import { ACCESS_TOKEN_EXPIRATION, SendMailEnum } from "../../constants.js";
 import { ACCESS_TOKEN_SECRET } from "../../envs.js";
+import { emailService } from "../../services/email.services.js";
 
 const authenticatedUserSchema = new mongoose.Schema(
   {

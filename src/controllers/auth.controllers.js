@@ -12,8 +12,8 @@ import {
 } from "../schema/auth.schema.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { sendEmail } from "../utils/mail.js";
 import { ACCESS_TOKEN_SECRET, CLIENT_SSO_REDIRECT_URL, NODE_ENV } from "../envs.js";
+import { emailService } from "../services/email.services.js";
 // Handles user signup: validates input, checks for existing user, creates authentication and profile records, sends verification email, and returns the created user profile.
 export const signUp = asyncHandler(async (req, res) => {
   // Extract user details from request body
@@ -88,7 +88,7 @@ export const signUp = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Failed to create verification record", []);
   }
   // Send verification email to the user
-  await sendEmail(SendMailEnum.VERIFY_EMAIL, {
+  await emailService.sendEmail(SendMailEnum.VERIFY_EMAIL, {
     to: newUser.email,
     verificationCode: temporaryCode,
     name: newUser.name,
@@ -96,7 +96,7 @@ export const signUp = asyncHandler(async (req, res) => {
   });
 
   // Send welcome email to the user
-  await sendEmail(SendMailEnum.WELCOME, {
+  await emailService.sendEmail(SendMailEnum.WELCOME, {
     to: newUser.email,
     name: newUser.name,
   });
@@ -154,7 +154,7 @@ export const signIn = asyncHandler(async (req, res) => {
         new Date(lastFailedLogin.createdAt);
       if (timeDifference < 1 * 60 * 1000) {
         // 5 minutes
-        await sendEmail(SendMailEnum.TOO_MANY_FAILED_LOGIN_ATTEMPTS, {
+        await emailService.sendEmail(SendMailEnum.TOO_MANY_FAILED_LOGIN_ATTEMPTS, {
           to: email,
           ipAddress: req.ip,
         });
@@ -190,7 +190,7 @@ export const signIn = asyncHandler(async (req, res) => {
   await loginHistory.save({ validateBeforeSave: false });
   // Send a sign-in notification email to the user
 
-  await sendEmail(SendMailEnum.SIGN_IN, {
+  await emailService.sendEmail(SendMailEnum.SIGN_IN, {
     to: user.email,
     name: user.name,
     ipAddress: req.ip,
@@ -240,7 +240,7 @@ export const forgetPassword = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Failed to create verification record", []);
   }
   // Send password reset email to the user
-  await sendEmail(SendMailEnum.RESET_PASSWORD, {
+  await emailService.sendEmail(SendMailEnum.RESET_PASSWORD, {
     to: user.email,
     verificationCode: temporaryCode,
     userName: user.name,
@@ -332,7 +332,7 @@ export const verifyEmail = asyncHandler(async (req, res) => {
   await verification.save();
 
   // Send verification success email
-  await sendEmail(SendMailEnum.VERIFY_EMAIL_SUCCESS, {
+  await emailService.sendEmail(SendMailEnum.VERIFY_EMAIL_SUCCESS, {
     to: user.email,
     name: user.name,
   });
@@ -372,7 +372,7 @@ export const resendVerificationEmail = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Failed to create verification record", []);
   }
 
-  await sendEmail(SendMailEnum.VERIFY_EMAIL, {
+  await emailService.sendEmail(SendMailEnum.VERIFY_EMAIL, {
     to: user.email,
     verificationCode: temporaryCode,
     name: user.name,

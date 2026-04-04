@@ -11,7 +11,8 @@ import requestIp from "request-ip";
 import swaggerUi from "swagger-ui-express";
 import { fileURLToPath } from "url";
 import YAML from "yaml";
-import passport from "./passport/index.js";
+import passport from "passport";
+import { passportService } from "./services/passport.services.js";
 // removed: UserRoleEnum (moved into passport module)
 import morganMiddleware from "./logger/morgan.logger.js";
 import { verifyAdmin, verifyJWT } from "./middlewares/auth.middlewares.js";
@@ -87,7 +88,8 @@ const limiter = rateLimit({
 // Apply the rate limiting middleware to all requests
 app.use(limiter);
 
-// passport strategies and serialization moved to ./passport/index.js
+// passport strategies and serialization initialized in service
+passportService.initializeStrategies();
 
 // required for passport
 app.use(

@@ -53,6 +53,7 @@ body {
   background: var(--page);
   min-height: 100vh;
   color: var(--text);
+  overflow-x: hidden;
 }
 .topnav {
   position: sticky;
@@ -60,9 +61,9 @@ body {
   left: 0;
   right: 0;
   z-index: 120;
-  width: auto;
-  margin-left: calc(clamp(16px, 4vw, 48px) * -1);
-  margin-right: calc(clamp(16px, 4vw, 48px) * -1);
+  width: 100%;
+  margin: 0;
+  padding: 18px clamp(16px, 5vw, 48px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -249,11 +250,11 @@ header p {
 }
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
   gap: 16px;
 }
 .books-grid--compact {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 220px));
   gap: 12px;
 }
 .favorites-grid h2 {

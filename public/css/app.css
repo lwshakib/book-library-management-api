@@ -128,29 +128,22 @@ body {
   border-color: transparent;
 }
 .theme-toggle {
-  border: 1px solid transparent;
-  border-radius: 12px;
-  width: 36px;
-  height: 36px;
+  border: none;
   padding: 0;
-  background: var(--surface-muted);
-  color: var(--muted);
+  background: none;
+  color: var(--text);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   cursor: pointer;
-  font-weight: 600;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 6px 18px -18px var(--shadow);
+  transition: color 0.18s ease;
 }
 .theme-toggle:hover {
-  background: var(--accent-soft);
   color: var(--accent);
 }
 .theme-toggle__icon {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;

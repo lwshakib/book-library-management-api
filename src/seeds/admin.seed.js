@@ -18,11 +18,11 @@ const booksData = JSON.parse(
 const seedAdminAndBooks = async () => {
   try {
     await mongoDBService.connect();
-    
+
     // Create admin user
     const adminEmail = "admin@booklibrary.com";
     const adminPassword = "AdminPassword123!";
-    
+
     let adminAuth = await AuthenticatedUserModel.findOne({ email: adminEmail });
     if (!adminAuth) {
       adminAuth = new AuthenticatedUserModel({
@@ -34,7 +34,7 @@ const seedAdminAndBooks = async () => {
         status: UserStatusEnum.ACTIVE,
       });
       await adminAuth.save();
-      
+
       const user = new UserModel({
         authUserId: adminAuth._id,
         name: "Admin User",
@@ -50,11 +50,13 @@ const seedAdminAndBooks = async () => {
       await adminAuth.save();
       console.log("✅ Admin user password reset successfully.");
     }
-    
+
     // Check if books already exist
     const existingBooks = await Book.countDocuments();
     if (existingBooks > 0) {
-      console.log(`ℹ️ Books already exist (${existingBooks} found). Skipping book seed.`);
+      console.log(
+        `ℹ️ Books already exist (${existingBooks} found). Skipping book seed.`,
+      );
     } else {
       // Insert all books
       await Book.insertMany(booksData);

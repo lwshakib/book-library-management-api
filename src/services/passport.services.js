@@ -33,7 +33,8 @@ export class PassportService {
         next(
           new ApiError(
             500,
-            "Something went wrong while deserializing the user. Error: " + error,
+            "Something went wrong while deserializing the user. Error: " +
+              error,
           ),
           null,
         );

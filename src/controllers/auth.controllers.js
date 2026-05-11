@@ -12,7 +12,11 @@ import {
 } from "../schema/auth.schema.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { ACCESS_TOKEN_SECRET, CLIENT_SSO_REDIRECT_URL, NODE_ENV } from "../envs.js";
+import {
+  ACCESS_TOKEN_SECRET,
+  CLIENT_SSO_REDIRECT_URL,
+  NODE_ENV,
+} from "../envs.js";
 import { emailService } from "../services/email.services.js";
 // Handles user signup: validates input, checks for existing user, creates authentication and profile records, sends verification email, and returns the created user profile.
 export const signUp = asyncHandler(async (req, res) => {
@@ -154,10 +158,13 @@ export const signIn = asyncHandler(async (req, res) => {
         new Date(lastFailedLogin.createdAt);
       if (timeDifference < 1 * 60 * 1000) {
         // 5 minutes
-        await emailService.sendEmail(SendMailEnum.TOO_MANY_FAILED_LOGIN_ATTEMPTS, {
-          to: email,
-          ipAddress: req.ip,
-        });
+        await emailService.sendEmail(
+          SendMailEnum.TOO_MANY_FAILED_LOGIN_ATTEMPTS,
+          {
+            to: email,
+            ipAddress: req.ip,
+          },
+        );
 
         throw new ApiError(
           429,

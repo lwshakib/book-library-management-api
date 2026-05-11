@@ -33,7 +33,7 @@
     localStorage.setItem(storageKey, nextTheme);
   });
 
-  if (typeof lucide !== 'undefined') {
+  if (typeof lucide !== "undefined") {
     lucide.createIcons();
   }
 })();

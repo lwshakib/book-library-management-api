@@ -4,7 +4,7 @@ import logger from "./logger/winston.logger.js";
 import { PORT, NODE_VERSION } from "./envs.js";
 const port = PORT || 3000;
 
-const majorNodeVersion = +(NODE_VERSION?.split(".")[0]) || 0;
+const majorNodeVersion = +NODE_VERSION?.split(".")[0] || 0;
 
 const startServer = () => {
   httpServer.listen(port || 8080, () => {
@@ -23,7 +23,8 @@ if (majorNodeVersion >= 14) {
     logger.error("Mongo db connect error: ", err);
   }
 } else {
-  mongoDBService.connect()
+  mongoDBService
+    .connect()
     .then(() => {
       startServer();
     })

@@ -13,7 +13,7 @@ node_modules
 
 # Test files
 __tests__
-bunfig.toml
+# pnpm-lock.yaml is NOT ignored — required by Docker build
 *.test.js
 
 # Dev tooling configs

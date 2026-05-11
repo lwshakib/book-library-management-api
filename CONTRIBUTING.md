@@ -26,7 +26,7 @@ This project and everyone participating in it is governed by our [Code of Conduc
 Before you begin, ensure you have:
 
 - Node.js (v14 or higher)
-- Bun (for running tests and as an alternative package manager)
+- [pnpm](https://pnpm.io/) (v8 or higher)
 - Docker and Docker Compose
 - Git
 - A code editor (VS Code recommended)
@@ -61,7 +61,7 @@ docker-compose up -d
 ### 2. Install Dependencies
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### 3. Environment Configuration
@@ -111,7 +111,7 @@ GMAIL_PASS=your_gmail_app_password
 ### 4. Start Development Server
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ### 5. Verify Setup
@@ -167,22 +167,21 @@ git checkout -b fix/issue-number-description
 
 - Write clean, readable code
 - Follow the existing code style and formatting
-- Run `npm run format` before committing to ensure consistent style
+- Run `pnpm format` before committing to ensure consistent style
 - Add comments for complex logic
 - Update documentation if needed
-- Add integration tests for new functionality in the `__tests__` directory
 
 ### 3. Test Your Changes
 
 ```bash
 # Start the development server
-npm run dev
-
-# Run automated tests
-npm test
+pnpm dev
 
 # Check code formatting
-npm run format:check
+pnpm format:check
+
+# Run the build step
+pnpm build
 
 # Test the API using Swagger
 # Visit http://localhost:7000/docs
@@ -351,31 +350,27 @@ Any other context, mockups, or examples
 
 ```
 book-library-management-api/
-├── __tests__/               # Integration testing suite
-│   ├── setup.js             # Global test setup (In-memory DB)
-│   └── ...test.js           # Route-specific integration tests
 ├── src/
-│   ├── controllers/           # Route handlers and business logic
-│   ├── models/               # Mongoose database models
+│   ├── controllers/         # Route handlers and business logic
+│   ├── models/              # Mongoose database models
 │   ├── routes/              # API route definitions
 │   ├── middlewares/         # Custom middleware
-│   ├── utils/               # Utility functions
+│   ├── utils/               # Utility functions & email templates
 │   ├── schema/              # Zod validation schemas
 │   ├── logger/              # Logging configuration
-│   ├── passport/            # OAuth strategies
+│   ├── services/            # Business services (email, MongoDB, passport)
 │   ├── views/               # EJS templates
-│   ├── services/            # Business services
 │   ├── seeds/               # Database seeders
-│   ├── db/                  # Database configuration
 │   ├── data/                # Static data
+│   ├── scripts/             # Utility scripts (DB teardown)
 │   ├── swagger.yaml         # API documentation
 │   ├── app.js               # Express app configuration
 │   ├── index.js             # Application entry point
 │   └── constants.js         # Application constants
 ├── public/                  # Static assets
 ├── logs/                    # Application logs
-├── .github/                 # GitHub configuration (Workflows, Issue Templates)
-├── docker-compose.yml       # Development services & orchestratiom
+├── .github/                 # GitHub configuration (Workflows, Issue Templates, PR Template)
+├── docker-compose.yml       # Development services & orchestration
 └── Dockerfile               # Application containerization
 ```
 
@@ -512,30 +507,21 @@ return res.status(200).json(new ApiResponse(200, data, "Success message"));
 throw new ApiError(400, "Error message");
 ```
 
-## 🧪 Testing Guidelines
+## 🧪 Quality Guidelines
 
-### Automated Testing
+### CI/CD Validation
 
-This project uses **Bun** as the test runner and **Supertest** for making HTTP requests to the API.
+All pull requests are automatically validated via GitHub Actions. The CI pipeline checks:
 
-1. **Running Tests**
+1. **Formatting** — `pnpm format:check` ensures code follows Prettier conventions
+2. **Build** — `pnpm build` validates the project builds successfully
 
-   ```bash
-   # Run all tests once
-   npm test
+You can run these checks locally before pushing:
 
-   # Run tests in watch mode
-   bun test --watch
-   ```
-
-2. **Writing Tests**
-   - Place all tests in the `__tests__` directory
-   - Use `.test.js` or `.spec.js` suffix
-   - Use the `setup.js` file for global configuration
-   - Mock external services (like email) when necessary
-
-3. **CI/CD Validation**
-   All pull requests are automatically tested via GitHub Actions. You can check the status of these tests in the "Checks" tab of your PR.
+```bash
+pnpm format:check
+pnpm build
+```
 
 ### Manual Testing
 
@@ -662,7 +648,7 @@ Add JSDoc comments for functions:
    ```bash
    # Reinstall dependencies
    rm -rf node_modules
-   npm install
+   pnpm install
    ```
 
 ## 📞 Contact

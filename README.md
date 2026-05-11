@@ -17,8 +17,7 @@ A comprehensive full-stack digital library management system built with Node.js,
 - **Favorites**: Personal bookmark system for users to save their favorite books
 - **Search & Filter**: Advanced book search with filtering, sorting, and pagination
 - **Profile Management**: User profile viewing and management
-- **Automated Testing**: Comprehensive integration test suite for all major routes
-- **CI/CD Pipeline**: Automated testing and code quality checks via GitHub Actions
+- **CI/CD Pipeline**: Automated code quality checks via GitHub Actions
 
 ### Authentication & Security
 
@@ -83,80 +82,35 @@ This project follows a monolithic architecture with modular design:
 book-library-management-api/
 ├── .github/                 # GitHub configuration
 │   ├── workflows/           # CI/CD pipelines (GitHub Actions)
-│   └── ISSUE_TEMPLATE/       # Standardized issue templates
-├── __tests__/               # Integration testing suite
-│   ├── auth.test.js
-│   ├── books.test.js
-│   ├── favorites.test.js
-│   ├── health.test.js
-│   ├── reviews.test.js
-│   └── setup.js             # Test environment setup
+│   ├── ISSUE_TEMPLATE/      # Standardized issue templates
+│   └── pull_request_template.md
 ├── src/
-│   ├── controllers/           # Route handlers and business logic
-│   │   ├── auth.controllers.js
-│   │   ├── book.controller.js
-│   │   ├── favorite.controllers.js
-│   │   └── review.controllers.js
-│   ├── models/               # Mongoose database models
-│   │   ├── auth/            # User and token models
-│   │   ├── book.model.js
-│   │   ├── favorite.model.js
-│   │   └── review.model.js
+│   ├── controllers/         # Route handlers and business logic
+│   ├── models/              # Mongoose database models
+│   │   └── auth/            # User and token models
 │   ├── routes/              # API route definitions
-│   │   ├── auth.routes.js
-│   │   ├── book.routes.js
-│   │   ├── favorite.routes.js
-│   │   ├── review.routes.js
-│   │   └── index.js
 │   ├── middlewares/         # Custom middleware
-│   │   ├── auth.middlewares.js
-│   │   ├── error.middlewares.js
-│   │   └── multer.middlewares.js
-│   ├── utils/               # Utility functions
-│   │   ├── templates/       # Email templates
-│   │   ├── ApiError.js
-│   │   ├── ApiResponse.js
-│   │   ├── asyncHandler.js
-│   │   ├── helpers.js
-│   │   └── mail.js
+│   ├── utils/               # Utility functions & email templates
 │   ├── schema/              # Zod validation schemas
-│   │   ├── auth.schema.js
-│   │   └── book.schema.js
-│   ├── logger/              # Logging configuration
-│   │   ├── winston.logger.js
-│   │   └── morgan.logger.js
-│   ├── passport/            # OAuth strategies
-│   │   └── index.js
+│   ├── logger/              # Logging configuration (Winston + Morgan)
+│   ├── services/            # Business services (email, MongoDB, passport)
 │   ├── views/               # EJS templates
-│   │   ├── index.ejs
-│   │   ├── book-details.ejs
-│   │   ├── favorites.ejs
-│   │   ├── profile.ejs
-│   │   └── partials/
-│   ├── services/            # Business services
-│   │   └── email.service.js
 │   ├── seeds/               # Database seeders
-│   │   └── books.seeds.js
-│   ├── db/                  # Database configuration
-│   │   └── index.js
-│   ├── data/                # Static data
-│   │   └── books.json
+│   ├── data/                # Static data (books.json)
+│   ├── scripts/             # Utility scripts (DB teardown)
 │   ├── swagger.yaml         # API documentation
 │   ├── app.js               # Express app configuration
 │   ├── index.js             # Application entry point
+│   ├── envs.js              # Environment variable exports
 │   └── constants.js         # Application constants
-├── public/                  # Static assets
-│   ├── css/
-│   ├── images/
-│   └── uploads/
+├── public/                  # Static assets (css, images)
 ├── logs/                    # Application logs
 ├── docker-compose.yml       # Development services & Full App orchestration
 ├── Dockerfile               # Application containerization
 ├── package.json
+├── pnpm-lock.yaml
 ├── .env.example
-├── .gitignore
-├── .dockerignore
-├── .prettierrc.yaml         # Code formatting configuration
+├── .prettierc.yaml          # Code formatting configuration
 ├── .prettierignore
 ├── nodemon.json
 ├── README.md
@@ -180,7 +134,6 @@ book-library-management-api/
 - **File Upload**: Multer
 - **Email**: Nodemailer
 - **Template Engine**: EJS
-- **Testing**: Bun (Test Runner), Supertest, MongoDB Memory Server
 - **Formatting**: Prettier
 - **CI/CD**: GitHub Actions
 
@@ -189,6 +142,7 @@ book-library-management-api/
 - **Database**: MongoDB
 - **Email Testing**: MailHog
 - **Containerization**: Docker & Docker Compose
+- **Package Manager**: pnpm
 - **Development**: Nodemon for hot reloading
 
 ## 🚀 Quick Start
@@ -196,6 +150,7 @@ book-library-management-api/
 ### Prerequisites
 
 - Node.js (v14 or higher)
+- [pnpm](https://pnpm.io/) (v8 or higher)
 - Docker and Docker Compose
 - Git
 
@@ -218,7 +173,7 @@ book-library-management-api/
 3. **Install dependencies**
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 4. **Set up environment variables**
@@ -269,10 +224,10 @@ book-library-management-api/
 
    ```bash
    # Development mode with hot reload
-   npm run dev
+   pnpm dev
 
    # Production mode
-   npm start
+   pnpm start
    ```
 
 6. **Access the application**
@@ -331,11 +286,13 @@ For complete API documentation with request/response examples, visit: http://loc
 ### Available Scripts
 
 ```bash
-npm start             # Start production server
-npm run dev           # Start development server with hot reload
-npm test              # Run integration tests (using Bun)
-npm run format        # Format code with Prettier
-npm run format:check  # Check code formatting
+pnpm start             # Start production server
+pnpm dev               # Start development server with hot reload
+pnpm build             # Run build validation
+pnpm format            # Format code with Prettier
+pnpm format:check      # Check code formatting
+pnpm seed              # Seed admin user and books into the database
+pnpm mongodb:teardown  # Drop the database (use with caution)
 ```
 
 ### Database Seeding
@@ -413,25 +370,13 @@ The email service provides:
 3. Trigger email actions in the application
 4. View sent emails in MailHog interface
 
-### Automated Tests
-
-The project includes a comprehensive suite of integration tests. Tests use `mongodb-memory-server` to run against a real but isolated database.
-
-```bash
-# Run all tests
-npm test
-
-# Run tests in watch mode
-bun test --watch
-```
-
 ### CI/CD Pipeline
 
-Every push and pull request to the `main` branch triggers an automated workflow that:
+Every push and pull request to the `main` branch triggers a GitHub Actions workflow that:
 
-1. Installs dependencies
-2. Checks code formatting
-3. Runs the full test suite
+1. Installs dependencies via pnpm
+2. Checks code formatting (`pnpm format:check`)
+3. Runs the build step (`pnpm build`)
 
 ### Email Testing
 

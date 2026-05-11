@@ -1,29 +1,23 @@
 # ──────────────────────────────────────────────
 #  Stage 1 – Install dependencies
 # ──────────────────────────────────────────────
-FROM ubuntu:22.04 AS deps
+FROM node:22-slim AS deps
 
-RUN apt-get update && apt-get install -y curl unzip && rm -rf /var/lib/apt/lists/*
-RUN curl -fsSL https://bun.sh/install | bash
-ENV PATH="/root/.bun/bin:${PATH}"
+# Enable pnpm via corepack (built into Node 16.13+)
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
 # Copy only package manifests first for better layer caching
-COPY package.json bun.lock ./
+COPY package.json pnpm-lock.yaml ./
 
 # Install production dependencies only
-RUN bun install --frozen-lockfile --production
+RUN pnpm install --frozen-lockfile --prod
 
 # ──────────────────────────────────────────────
 #  Stage 2 – Production image
 # ──────────────────────────────────────────────
-FROM ubuntu:22.04 AS runner
-
-RUN apt-get update && apt-get install -y curl wget && \
-    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get install -y nodejs && \
-    rm -rf /var/lib/apt/lists/*
+FROM node:22-slim AS runner
 
 WORKDIR /app
 

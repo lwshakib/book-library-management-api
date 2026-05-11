@@ -57,6 +57,25 @@ A comprehensive full-stack digital library management system built with Node.js,
 
 This project follows a monolithic architecture with modular design:
 
+```
+┌─────────────────┐
+│   Client/Views  │
+│   (EJS Pages)   │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐    ┌─────────────────┐
+│   Express API   │───►│  Email Service  │
+│   (Backend)     │    │  (Nodemailer)   │
+└────────┬────────┘    └─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│    MongoDB      │
+│   (Database)    │
+└─────────────────┘
+```
+
 ```mermaid
 graph TD
     Client[Client/Views - EJS Pages]

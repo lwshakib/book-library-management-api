@@ -57,23 +57,16 @@ A comprehensive full-stack digital library management system built with Node.js,
 
 This project follows a monolithic architecture with modular design:
 
-```
-┌─────────────────┐
-│   Client/Views  │
-│   (EJS Pages)   │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐    ┌─────────────────┐
-│   Express API   │───►│  Email Service  │
-│   (Backend)     │    │  (Nodemailer)   │
-└────────┬────────┘    └─────────────────┘
-         │
-         ▼
-┌─────────────────┐
-│    MongoDB      │
-│   (Database)    │
-└─────────────────┘
+```mermaid
+graph TD
+    Client[Client/Views - EJS Pages]
+    API[Express API - Backend]
+    Email[Email Service - Nodemailer]
+    DB[(MongoDB - Database)]
+
+    Client --> API
+    API --> Email
+    API --> DB
 ```
 
 ## 📁 Project Structure
@@ -239,6 +232,14 @@ book-library-management-api/
 ## 📚 API Documentation
 
 ### Authentication Endpoints
+
+```mermaid
+graph LR
+    SignUp[Sign Up] --> Verify[Verify Email]
+    Verify --> SignIn[Sign In]
+    SignIn --> Session[Session/JWT]
+    OAuth[Google/GitHub Login] --> Session
+```
 
 - `POST /auth/sign-up` - User registration
 - `POST /auth/sign-in` - User login

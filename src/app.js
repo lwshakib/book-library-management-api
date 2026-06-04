@@ -71,9 +71,8 @@ const limiter = rateLimit({
   max: 5000, // Limit each IP to 500 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  keyGenerator: (req, res) => {
-    if (req.query.apiKey) return req.query.apiKey;
-    return ipKeyGenerator(req.clientIp); // IP address from requestIp.mw(), as opposed to req.ip
+  keyGenerator: (req) => {
+    return ipKeyGenerator(req.clientIp); // Use client IP to identify rate limit buckets
   },
   handler: (_, __, ___, options) => {
     throw new ApiError(

@@ -69,8 +69,8 @@ export const signUp = asyncHandler(async (req, res) => {
       .toUpperCase()}`,
   });
 
-  if (!newUser) {
-    return next(new Error("Error while creating user profile"));
+  if (!userProfile) {
+    throw new ApiError(500, "Error while creating user profile", []);
   }
   await newUser.save({ validateBeforeSave: false });
   // Send verification email to the user

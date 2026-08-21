@@ -14,9 +14,7 @@ export class MongoDBService {
         `${MONGODB_URI}/${DB_NAME}`,
       );
       this.dbInstance = connectionInstance;
-      logger.info(
-        `\n☘️  MongoDB Connected! Db host: ${connectionInstance.connection.host}\n`,
-      );
+      logger.info("\n☘️  MongoDB Connected successfully!\n");
       return connectionInstance;
     } catch (error) {
       logger.error("MongoDB connection error: ", error);

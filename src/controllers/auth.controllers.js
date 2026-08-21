@@ -58,7 +58,6 @@ export const signUp = asyncHandler(async (req, res) => {
     // Output: 500 Internal Server Error if user creation fails
     throw new ApiError(500, "Failed to create user", []);
   }
-  await newUser.save({ validateBeforeSave: false });
 
   const userProfile = await UserModel.create({
     authUserId: newUser._id,
@@ -72,7 +71,6 @@ export const signUp = asyncHandler(async (req, res) => {
   if (!userProfile) {
     throw new ApiError(500, "Error while creating user profile", []);
   }
-  await newUser.save({ validateBeforeSave: false });
   // Send verification email to the user
 
   // Generate a temporary verification code for email verification
@@ -140,8 +138,6 @@ export const signIn = asyncHandler(async (req, res) => {
       throw new ApiError(500, "Failed to create login history", []);
     }
 
-    await loginHistory.save({ validateBeforeSave: false });
-
     const loginHitoryCheck = await LoginHistoryModel.find({
       authUserId: user._id,
       ipAddress: req.ip,
@@ -194,7 +190,6 @@ export const signIn = asyncHandler(async (req, res) => {
   if (!loginHistory) {
     throw new ApiError(500, "Failed to create login history", []);
   }
-  await loginHistory.save({ validateBeforeSave: false });
   // Send a sign-in notification email to the user
 
   await emailService.sendEmail(SendMailEnum.SIGN_IN, {

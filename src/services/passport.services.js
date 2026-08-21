@@ -75,7 +75,6 @@ export class PassportService {
               if (!newUser) {
                 return next(new Error("Error while creating user profile"));
               }
-              await newUser.save({ validateBeforeSave: false });
               next(null, createdUser);
             } else {
               next(new ApiError(500, "Error while registering the user"), null);
@@ -132,7 +131,6 @@ export class PassportService {
               if (!newUser) {
                 return next(new Error("Error while creating user profile"));
               }
-              await newUser.save({ validateBeforeSave: false });
               next(null, createdUser);
             } else {
               next(new ApiError(500, "Error while registering the user"), null);
